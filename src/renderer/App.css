@@ -5,9 +5,9 @@
 body {
   position: relative;
   color: #000;
-  height: 100vh;
+  /* height: 100vh; */
   background: #fff;
   font-family: sans-serif;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
   padding: 2rem 5rem;
 }
