@@ -138,7 +138,7 @@ function Form2() {
         {/* Invoice Items */}
         <span className="font-bold text-xl">Invoice Items</span>
         <div className="px-6 md:px-16 grid gap-3">
-          <span>Holy Mass Type</span>
+          {/* <span>Holy Mass Type</span>
           <div className="flex flex-col">
             <select
               name="HolyMassType"
@@ -150,8 +150,8 @@ function Form2() {
               <option value="1">Normal</option>
               <option value="2">Special</option>
             </select>
-          </div>
-          <div className="grid grid-cols-5 gap-2 md:gap-20 my-2 font-semibold">
+          </div> */}
+          <div className="grid grid-cols-6 gap-2 md:gap-20 my-2 font-semibold">
             <span className="col-span-2">Item</span>
             <span className="col-start-3">Price</span>
             <span className="col-start-4">Booked</span>
@@ -161,14 +161,14 @@ function Form2() {
             {InvoiceItems.map((item) => (
               <div
                 key={item.id}
-                className="grid gap-2 md:gap-20 grid-cols-5 my-2"
+                className="grid gap-2 md:gap-20 grid-cols-6 my-2"
               >
                 <input
                   type="text"
                   name="churchName"
                   value={item.churchName}
                   onChange={(e) => handleInputChange(e, item)}
-                  placeholder="Church Name"
+                  placeholder="Function Name"
                   className="col-span-2 p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
                 />{' '}
                 <input
@@ -197,6 +197,18 @@ function Form2() {
                   placeholder="Total Price"
                   className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
                 />
+                <div className="flex justify-center items-center text-red-600 font-bold text-3xl">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setInvoiceItems((prevItems) =>
+                        prevItems.filter((i) => i.id !== item.id),
+                      )
+                    }
+                  >
+                    X
+                  </button>
+                </div>
               </div>
             ))}
           </div>
