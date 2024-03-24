@@ -4,7 +4,7 @@ import React from 'react';
 function Form2() {
   const number = Math.floor(Math.random() * 1000000);
   return (
-    <div className="ring-4 ring-[#D3EAF0] p-10 rounded-xl">
+    <div className="ring-4 ring-bgSecondary p-10 rounded-xl">
       <div className="bg-bgOther px-10 py-10 rounded-xl text-textPrimary">
         <h2 className="font-extrabold text-2xl">Holy Family Church</h2>
         <p className="font-medium">Avittathur</p>
@@ -58,7 +58,7 @@ function Form2() {
           </div>
         </div>
         {/* Invoice Items */}
-        <div className='felx flex-col'>
+        <div className='flex flex-col'>
           Invoice Items
         </div>
         {/* Notes */}
