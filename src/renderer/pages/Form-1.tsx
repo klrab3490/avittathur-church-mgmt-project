@@ -1,20 +1,16 @@
-/* eslint-disable prettier/prettier */
-import React from 'react';
+import TopBar from '../components/TopBar';
 
 function Form1() {
   const number = Math.floor(Math.random() * 1000000);
   return (
-    <div className="ring-4 ring-bgSecondary p-10 rounded-xl">
-      <div className="bg-bgOther px-10 py-10 rounded-xl text-textPrimary">
-        <h2 className="font-extrabold text-2xl">Holy Family Church</h2>
-        <p className="font-medium">Avittathur</p>
-      </div>
+    <div className="ring-4 ring-bgSecondary p-10 rounded-xl text-[#236675]">
+      <TopBar />
       <form className="flex flex-col gap-3 py-10 px-5">
         <div className="flex justify-between">
-          <span>Normal Form</span>
-          <span>Invoice Number #N{number}</span>
+          <span className="text-2xl font-bold">Normal Form</span>
+          <span className="text-xl">Invoice Number #N{number}</span>
         </div>
-        <span>Details</span>
+        <span className="text-xl font-bold mb-4 mt-8">Details</span>
         {/* Name */}
         <div className="flex justify-between">
           <div className="w-1/2 flex flex-col">
@@ -43,7 +39,7 @@ function Form1() {
             rows={6}
             name="address"
             placeholder="Address"
-            className="p-2 rounded-lg border-2 border-black/15 bg-bg-bgSecondary resize-none"
+            className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary resize-none"
           />
         </div>
         {/* House Name */}
@@ -89,7 +85,7 @@ function Form1() {
           </div>
         </div>
         {/* Invoice Items */}
-        <div className="felx flex-col">Invoice Items</div>
+        <div className="felx flex-col font-bold text-xl">Invoice Items</div>
         {/* Notes */}
         <div className="flex flex-col">
           <span>Notes</span>

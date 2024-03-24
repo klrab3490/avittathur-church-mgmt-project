@@ -11,3 +11,6 @@ body {
   /* overflow-y: hidden; */
   padding: 2rem 5rem;
 }
+input, textarea{
+  @apply text-black
+}

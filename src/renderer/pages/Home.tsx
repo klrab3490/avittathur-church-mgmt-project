@@ -1,12 +1,10 @@
 import MenuChip from '../components/MenuChip';
+import TopBar from '../components/TopBar';
 
 function Home() {
   return (
     <div className="ring-4 ring-bgSecondary p-10 rounded-xl">
-      <div className="bg-bgOther px-10 py-10 rounded-xl text-textPrimary">
-        <h2 className="font-extrabold text-2xl">Holy Family Church</h2>
-        <p className="font-medium">Avittathur</p>
-      </div>
+      <TopBar />
       <div className="pt-6">
         <h2 className="text-textPrimary font-bold text-2xl">Church Services</h2>
         <div className="py-10 grid grid-cols-1 md:grid-cols-2 md:gap-x-40 gap-10">
