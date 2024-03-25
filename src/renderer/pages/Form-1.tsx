@@ -11,7 +11,7 @@ interface InvoiceItemsObject {
 }
 
 function Form1() {
-  const number = Math.floor(Math.random() * 1000000);
+  const [invoice, setInvoice] = useState(0);
   const emptyInvoiceItem = {
     id: crypto.randomUUID().toString(),
     functionName: '',
@@ -27,6 +27,7 @@ function Form1() {
   // Update total and calculate price*qty whenever change in items
   useEffect(() => {
     const updatedItems = InvoiceItems.map((invoiceItem) => ({
+      invoiceId: `N${invoice.toString()}`,
       ...invoiceItem,
       total: invoiceItem.price * invoiceItem.Booked,
     }));
@@ -37,7 +38,7 @@ function Form1() {
       setTotal(totalAmount);
       setInvoiceItems(updatedItems);
     }
-  }, [InvoiceItems, Total]);
+  }, [InvoiceItems, Total, invoice]);
 
   // Function for handling inputs
   const handleInputChange = (
@@ -52,13 +53,62 @@ function Form1() {
       ),
     );
   };
+
+  // form data
+  const [fname, setFName] = useState('');
+  const [lname, setLName] = useState('');
+  const [address, setAddress] = useState('');
+  const [house, setHouse] = useState('');
+  const [unit, setUnit] = useState('');
+  const [issueDate, setIssueDate] = useState(
+    new Date().toISOString().split('T')[0],
+  );
+  const [bookDate, setBookDate] = useState('');
+  const [note, setNote] = useState('');
+
+  // form clear
+  const clearForm = () => {
+    setInvoice(invoice + 1);
+    setFName('');
+    setLName('');
+    setAddress('');
+    setHouse('');
+    setUnit('');
+    setBookDate('');
+    setNote('');
+    setInvoiceItems([emptyInvoiceItem]);
+  };
+
+  // form submit
+  const handleCreate = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const mea = `
+      Invoice Number: #N${invoice}
+      Name: ${fname}  ${lname}
+      Address: ${address}
+      House: ${house}
+      Unit: ${unit}
+      Issue Date: ${issueDate}
+      Book Date: ${bookDate}
+      Invoice Items: ${InvoiceItems.map(
+        (item) => `${item.functionName} - ${item.total}`,
+      )}
+      Note: ${note} 
+    `;
+    console.log(mea);
+    clearForm();
+  };
+
   return (
     <div className="ring-4 ring-bgSecondary p-10 rounded-xl text-[#236675]">
       <TopBar />
-      <form className="flex flex-col gap-3 py-10 px-5">
+      <form
+        onSubmit={handleCreate}
+        className="flex flex-col gap-3 py-10 px-5 text-[#236675]"
+      >
         <div className="flex justify-between">
           <span className="text-2xl font-bold">Normal Form</span>
-          <span className="text-xl">Invoice Number #N{number}</span>
+          <span className="text-xl">Invoice Number #N{invoice}</span>
         </div>
         <span className="text-xl font-bold mb-4 mt-8">Details</span>
         {/* Name */}
@@ -68,6 +118,8 @@ function Form1() {
             <input
               type="text"
               name="firstname"
+              value={fname}
+              onChange={(e) => setFName(e.target.value)}
               placeholder="First Name"
               className="w-3/4 p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
             />
@@ -77,6 +129,8 @@ function Form1() {
             <input
               type="text"
               name="lastname"
+              value={lname}
+              onChange={(e) => setLName(e.target.value)}
               placeholder="Last Name"
               className="w-3/4 p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
             />
@@ -88,6 +142,8 @@ function Form1() {
           <textarea
             rows={6}
             name="address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
             placeholder="Address"
             className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary resize-none"
           />
@@ -98,6 +154,8 @@ function Form1() {
           <input
             type="text"
             name="housename"
+            value={house}
+            onChange={(e) => setHouse(e.target.value)}
             placeholder="House Name"
             className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
           />
@@ -107,6 +165,8 @@ function Form1() {
           <span>Unit Type</span>
           <select
             name="unittype"
+            value={unit}
+            onChange={(e) => setUnit(e.target.value)}
             className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
           >
             <option value="">Select Unit Type</option>
@@ -122,6 +182,8 @@ function Form1() {
             <input
               type="date"
               name="date"
+              value={issueDate}
+              onChange={(e) => setIssueDate(e.target.value)}
               className="w-3/4 p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
             />
           </div>
@@ -130,6 +192,8 @@ function Form1() {
             <input
               type="date"
               name="date"
+              value={bookDate}
+              onChange={(e) => setBookDate(e.target.value)}
               className="w-3/4 p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
             />
           </div>
@@ -231,6 +295,8 @@ function Form1() {
           <textarea
             rows={6}
             name="notes"
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
             placeholder="Notes"
             className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary resize-none"
           />

@@ -11,7 +11,7 @@ interface InvoiceItemsObject {
 }
 
 function Form2() {
-  const number = Math.floor(Math.random() * 1000000);
+  const [invoice, setInvoice] = useState(0);
   const emptyInvoiceItem = {
     id: crypto.randomUUID().toString(),
     functionName: '',
@@ -27,6 +27,7 @@ function Form2() {
   // Update total and calculate price*qty whenever change in items
   useEffect(() => {
     const updatedItems = InvoiceItems.map((invoiceItem) => ({
+      invoiceId: `S${invoice.toString()}`,
       ...invoiceItem,
       total: invoiceItem.price * invoiceItem.Booked,
     }));
@@ -37,7 +38,7 @@ function Form2() {
       setTotal(totalAmount);
       setInvoiceItems(updatedItems);
     }
-  }, [InvoiceItems, Total]);
+  }, [InvoiceItems, Total, invoice]);
 
   // Function for handling inputs
   const handleInputChange = (
@@ -59,17 +60,20 @@ function Form2() {
   const [address, setAddress] = useState('');
   const [house, setHouse] = useState('');
   const [unit, setUnit] = useState('');
-  const [issueDate, setIssueDate] = useState('');
+  const [issueDate, setIssueDate] = useState(
+    new Date().toISOString().split('T')[0],
+  );
   const [bookDate, setBookDate] = useState('');
   const [note, setNote] = useState('');
 
+  // form clear
   const clearForm = () => {
+    setInvoice(invoice + 1);
     setFName('');
     setLName('');
     setAddress('');
     setHouse('');
     setUnit('');
-    setIssueDate('');
     setBookDate('');
     setNote('');
     setInvoiceItems([emptyInvoiceItem]);
@@ -79,6 +83,7 @@ function Form2() {
   const handleCreate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const mea = `
+      Invoice Number: S${invoice}
       Name: ${fname}  ${lname}
       Address: ${address}
       House: ${house}
@@ -103,7 +108,7 @@ function Form2() {
       >
         <div className="flex justify-between">
           <span className="text-2xl font-bold">Special Form</span>
-          <span className="text-xl">Invoice Number #S{number}</span>
+          <span className="text-xl">Invoice Number #S{invoice}</span>
         </div>
         <span className="text-xl font-bold mb-4 mt-8">Details</span>
 
