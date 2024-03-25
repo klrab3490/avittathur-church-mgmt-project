@@ -52,13 +52,58 @@ function Form2() {
       ),
     );
   };
+
+  // form data
+  const [fname, setFName] = useState('');
+  const [lname, setLName] = useState('');
+  const [address, setAddress] = useState('');
+  const [house, setHouse] = useState('');
+  const [unit, setUnit] = useState('');
+  const [issueDate, setIssueDate] = useState('');
+  const [bookDate, setBookDate] = useState('');
+  const [note, setNote] = useState('');
+
+  const clearForm = () => {
+    setFName('');
+    setLName('');
+    setAddress('');
+    setHouse('');
+    setUnit('');
+    setIssueDate('');
+    setBookDate('');
+    setNote('');
+    setInvoiceItems([emptyInvoiceItem]);
+  };
+
+  // form submit
+  const handleCreate = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const mea = `
+      Name: ${fname}  ${lname}
+      Address: ${address}
+      House: ${house}
+      Unit: ${unit}
+      Issue Date: ${issueDate}
+      Book Date: ${bookDate}
+      Invoice Items: ${InvoiceItems.map(
+        (item) => `${item.functionName} - ${item.total}`,
+      )}
+      Note: ${note} 
+    `;
+    console.log(mea);
+    clearForm();
+  };
+
   return (
     <div className="ring-4 ring-bgSecondary p-10 rounded-xl">
       <TopBar />
-      <form className="flex flex-col gap-3 py-10 px-5 text-[#236675]">
+      <form
+        onSubmit={handleCreate}
+        className="flex flex-col gap-3 py-10 px-5 text-[#236675]"
+      >
         <div className="flex justify-between">
           <span className="text-2xl font-bold">Special Form</span>
-          <span className="text-xl">Invoice Number #N{number}</span>
+          <span className="text-xl">Invoice Number #S{number}</span>
         </div>
         <span className="text-xl font-bold mb-4 mt-8">Details</span>
 
@@ -69,7 +114,9 @@ function Form2() {
             <input
               type="text"
               name="firstname"
+              value={fname}
               placeholder="First Name"
+              onChange={(e) => setFName(e.target.value)}
               className="w-3/4 p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
             />
           </div>
@@ -78,7 +125,9 @@ function Form2() {
             <input
               type="text"
               name="lastname"
+              value={lname}
               placeholder="Last Name"
+              onChange={(e) => setLName(e.target.value)}
               className="w-3/4 p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
             />
           </div>
@@ -89,7 +138,9 @@ function Form2() {
           <textarea
             rows={6}
             name="address"
+            value={address}
             placeholder="Address"
+            onChange={(e) => setAddress(e.target.value)}
             className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary resize-none"
           />
         </div>
@@ -99,7 +150,9 @@ function Form2() {
           <input
             type="text"
             name="housename"
+            value={house}
             placeholder="House Name"
+            onChange={(e) => setHouse(e.target.value)}
             className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
           />
         </div>
@@ -108,6 +161,8 @@ function Form2() {
           <span>Unit Type</span>
           <select
             name="unittype"
+            value={unit}
+            onChange={(e) => setUnit(e.target.value)}
             className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
           >
             <option value="">Select Unit Type</option>
@@ -123,6 +178,8 @@ function Form2() {
             <input
               type="date"
               name="date"
+              value={issueDate}
+              onChange={(e) => setIssueDate(e.target.value)}
               className="w-3/4 p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
             />
           </div>
@@ -131,6 +188,8 @@ function Form2() {
             <input
               type="date"
               name="date"
+              value={bookDate}
+              onChange={(e) => setBookDate(e.target.value)}
               className="w-3/4 p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
             />
           </div>
@@ -232,7 +291,9 @@ function Form2() {
           <textarea
             rows={6}
             name="notes"
+            value={note}
             placeholder="Notes"
+            onChange={(e) => setNote(e.target.value)}
             className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary resize-none"
           />
         </div>
