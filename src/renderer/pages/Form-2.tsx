@@ -1,9 +1,10 @@
+import { IoIosTrash } from 'react-icons/io';
 import React, { useEffect, useState } from 'react';
 import TopBar from '../components/TopBar';
 
 interface InvoiceItemsObject {
   id: string;
-  churchName: string;
+  functionName: string;
   price: number;
   Booked: number;
   total: number;
@@ -13,8 +14,8 @@ function Form2() {
   const number = Math.floor(Math.random() * 1000000);
   const emptyInvoiceItem = {
     id: crypto.randomUUID().toString(),
-    churchName: '',
-    price: 10,
+    functionName: '',
+    price: 100,
     Booked: 1,
     total: 0,
   };
@@ -135,23 +136,9 @@ function Form2() {
           </div>
         </div>
         {/* Invoice Items */}
-        {/* Invoice Items */}
         <span className="font-bold text-xl">Invoice Items</span>
         <div className="px-6 md:px-16 grid gap-3">
-          {/* <span>Holy Mass Type</span>
-          <div className="flex flex-col">
-            <select
-              name="HolyMassType"
-              className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
-            >
-              <option value="" defaultChecked disabled>
-                Select Holy Mass Type
-              </option>
-              <option value="1">Normal</option>
-              <option value="2">Special</option>
-            </select>
-          </div> */}
-          <div className="grid grid-cols-6 gap-2 md:gap-20 my-2 font-semibold">
+          <div className="grid grid-cols-5 gap-2 md:gap-20 my-2 font-semibold">
             <span className="col-span-2">Item</span>
             <span className="col-start-3">Price</span>
             <span className="col-start-4">Booked</span>
@@ -161,12 +148,12 @@ function Form2() {
             {InvoiceItems.map((item) => (
               <div
                 key={item.id}
-                className="grid gap-2 md:gap-20 grid-cols-6 my-2"
+                className="grid gap-2 md:gap-20 grid-cols-5 my-2"
               >
                 <input
                   type="text"
-                  name="churchName"
-                  value={item.churchName}
+                  name="functionName"
+                  value={item.functionName}
                   onChange={(e) => handleInputChange(e, item)}
                   placeholder="Function Name"
                   className="col-span-2 p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
@@ -189,25 +176,23 @@ function Form2() {
                   placeholder="Booked Qty."
                   className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
                 />{' '}
-                <input
-                  type="number"
-                  name="TotalPrice"
-                  value={item.total}
-                  disabled
-                  placeholder="Total Price"
-                  className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
-                />
-                <div className="flex justify-center items-center text-red-600 font-bold text-3xl">
-                  <button
-                    type="button"
+                <div className="flex w-full justify-center items-center">
+                  <input
+                    type="number"
+                    name="TotalPrice"
+                    value={item.total}
+                    disabled
+                    placeholder="Total Price"
+                    className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary w-3/4 gap-4"
+                  />
+                  <IoIosTrash
+                    className="text-red-600 font-bold text-3xl"
                     onClick={() =>
                       setInvoiceItems((prevItems) =>
                         prevItems.filter((i) => i.id !== item.id),
                       )
                     }
-                  >
-                    X
-                  </button>
+                  />
                 </div>
               </div>
             ))}
