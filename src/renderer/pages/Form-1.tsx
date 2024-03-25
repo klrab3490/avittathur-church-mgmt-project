@@ -136,67 +136,78 @@ function Form1() {
         </div>
         {/* Invoice Items */}
         <span className="font-bold text-xl">Invoice Items</span>
-        <div className="px-6 md:px-16 grid gap-3">
-          <div className="grid grid-cols-5 gap-2 md:gap-10 my-2 font-semibold">
-            <span className="col-span-2">Item</span>
-            <span className="col-start-3">Price</span>
-            <span className="col-start-4">Booked</span>
-            <span className="col-start-5">Total Price</span>
+        <div className="flex flex-col">
+          <div className="w-full flex justify-center items-center">
+            <table className="table-fixed border-separate border-spacing-4">
+              <thead>
+                <tr className="font-semibold">
+                  <th className="w-52">Item</th>
+                  <th className="w-32">Price</th>
+                  <th className="w-32">Booked</th>
+                  <th className="w-32">Total Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {InvoiceItems.map((item) => (
+                  <tr key={item.id}>
+                    <td>
+                      <input
+                        type="text"
+                        name="functionName"
+                        value={item.functionName}
+                        onChange={(e) => handleInputChange(e, item)}
+                        placeholder="Function Name"
+                        className="p-2 w-52 rounded-lg border-2 border-black/15 bg-bgSecondary"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        name="price"
+                        value={item.price}
+                        min={0}
+                        onChange={(e) => handleInputChange(e, item)}
+                        placeholder="Price"
+                        className="p-2 w-32 rounded-lg border-2 border-black/15 bg-bgSecondary"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        name="Booked"
+                        value={item.Booked}
+                        min={1}
+                        onChange={(e) => handleInputChange(e, item)}
+                        placeholder="Booked Qty."
+                        className="p-2  w-32 rounded-lg border-2 border-black/15 bg-bgSecondary"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        name="TotalPrice"
+                        value={item.total}
+                        disabled
+                        placeholder="Total Price"
+                        className="p-2 w-32 rounded-lg border-2 border-black/15 bg-bgSecondary"
+                      />
+                    </td>
+                    <td>
+                      <IoIosTrash
+                        className="text-red-600 font-bold text-3xl"
+                        onClick={() =>
+                          setInvoiceItems((prevItems) =>
+                            prevItems.filter((i) => i.id !== item.id),
+                          )
+                        }
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          <div>
-            {InvoiceItems.map((item) => (
-              <div
-                key={item.id}
-                className="grid gap-2 md:gap-10 grid-cols-5 my-2"
-              >
-                <input
-                  type="text"
-                  name="functionName"
-                  value={item.functionName}
-                  onChange={(e) => handleInputChange(e, item)}
-                  placeholder="Function Name"
-                  className="col-span-2 p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
-                />{' '}
-                <input
-                  type="number"
-                  name="price"
-                  value={item.price}
-                  min={0}
-                  onChange={(e) => handleInputChange(e, item)}
-                  placeholder="Price"
-                  className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
-                />{' '}
-                <input
-                  type="number"
-                  name="Booked"
-                  value={item.Booked}
-                  min={1}
-                  onChange={(e) => handleInputChange(e, item)}
-                  placeholder="Booked Qty."
-                  className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
-                />{' '}
-                <div className="flex w-full justify-center items-center">
-                  <input
-                    type="number"
-                    name="TotalPrice"
-                    value={item.total}
-                    disabled
-                    placeholder="Total Price"
-                    className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary w-3/4 gap-4"
-                  />
-                  <IoIosTrash
-                    className="text-red-600 font-bold text-3xl"
-                    onClick={() =>
-                      setInvoiceItems((prevItems) =>
-                        prevItems.filter((i) => i.id !== item.id),
-                      )
-                    }
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="flex justify-between pr-6 md:pr-20">
+          <div className="flex justify-between px-6 md:px-20 pt-2">
             <button
               className="text-[#104972] bg-[#5BD2ED] font-bold w-fit p-2 rounded-xl"
               type="button"
@@ -214,7 +225,6 @@ function Form1() {
             </span>
           </div>
         </div>
-
         {/* Notes */}
         <div className="flex flex-col">
           <span className="font-bold text-xl my-4">Notes</span>
