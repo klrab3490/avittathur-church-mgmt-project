@@ -11,7 +11,7 @@ interface InvoiceItemsObject {
 }
 
 function Form1() {
-  const [invoice, setInvoice] = useState(0);
+  const [invoice, setInvoice] = useState('0000');
   const emptyInvoiceItem = {
     id: crypto.randomUUID().toString(),
     functionName: '',
@@ -68,7 +68,11 @@ function Form1() {
 
   // form clear
   const clearForm = () => {
-    setInvoice(invoice + 1);
+    setInvoice((prevInvoice) => {
+      const num = parseInt(prevInvoice, 10);
+      const incrementedNum = num + 1;
+      return incrementedNum.toString().padStart(4, '0');
+    });
     setFName('');
     setLName('');
     setAddress('');

@@ -11,16 +11,47 @@ interface InvoiceItemsObject {
 }
 
 function Form2() {
-  const [invoice, setInvoice] = useState(0);
+  const [invoice, setInvoice] = useState('0000');
   const emptyInvoiceItem = {
     id: crypto.randomUUID().toString(),
     functionName: '',
-    price: 100,
+    price: 0,
+    Booked: 1,
+    total: 0,
+  };
+  const emptyInvoiceItem1 = {
+    id: crypto.randomUUID().toString(),
+    functionName: 'Ordinary Mass / സാധാരണ കുർബാന',
+    price: 0,
+    Booked: 1,
+    total: 0,
+  };
+  const emptyInvoiceItem2 = {
+    id: crypto.randomUUID().toString(),
+    functionName: 'A Solemn Mass / ആഘോഷമായ കു൪ബാന',
+    price: 0,
+    Booked: 1,
+    total: 0,
+  };
+  const emptyInvoiceItem3 = {
+    id: crypto.randomUUID().toString(),
+    functionName: ' / ഒപ്പീസ് പള്ളിയിൽ',
+    price: 0,
+    Booked: 1,
+    total: 0,
+  };
+  const emptyInvoiceItem4 = {
+    id: crypto.randomUUID().toString(),
+    functionName: ' / ഒപ്പീസ് സെമിത്തേരിയിൽ',
+    price: 0,
     Booked: 1,
     total: 0,
   };
   const [InvoiceItems, setInvoiceItems] = useState<InvoiceItemsObject[]>([
-    emptyInvoiceItem,
+    emptyInvoiceItem1,
+    emptyInvoiceItem2,
+    emptyInvoiceItem3,
+    emptyInvoiceItem4,
   ]);
   const [Total, setTotal] = useState(0);
 
@@ -68,7 +99,11 @@ function Form2() {
 
   // form clear
   const clearForm = () => {
-    setInvoice(invoice + 1);
+    setInvoice((prevInvoice) => {
+      const num = parseInt(prevInvoice, 10);
+      const incrementedNum = num + 1;
+      return incrementedNum.toString().padStart(4, '0');
+    });
     setFName('');
     setLName('');
     setAddress('');
@@ -206,7 +241,7 @@ function Form2() {
             <table className="table-fixed border-separate border-spacing-4">
               <thead>
                 <tr className="font-semibold">
-                  <th className="w-52">Item</th>
+                  <th className="w-96">Item</th>
                   <th className="w-32">Price</th>
                   <th className="w-32">Booked</th>
                   <th className="w-32">Total Price</th>
@@ -222,7 +257,7 @@ function Form2() {
                         value={item.functionName}
                         onChange={(e) => handleInputChange(e, item)}
                         placeholder="Function Name"
-                        className="p-2 w-52 rounded-lg border-2 border-black/15 bg-bgSecondary"
+                        className="p-2 w-96 rounded-lg border-2 border-black/15 bg-bgSecondary"
                       />
                     </td>
                     <td>
