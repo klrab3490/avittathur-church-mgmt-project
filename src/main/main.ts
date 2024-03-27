@@ -14,6 +14,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import pool from '../database/dbConfig';
 
 class AppUpdater {
   constructor() {
@@ -29,6 +30,73 @@ ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
   event.reply('ipc-example', msgTemplate('pong'));
+});
+
+ipcMain.on('insert-special-form', async (event, formData) => {
+  try {
+    console.log('Inserting form data:', formData);
+    const query =
+      'INSERT INTO Special_Form (name, address, invoice_no, housename, unit, formdate, dateofHolymass, amount, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const {
+      name,
+      address,
+      invoice,
+      housename,
+      unit,
+      formdate,
+      dateOfHolymass,
+      amount,
+      note,
+    } = formData;
+    console.log(
+      'Form data:',
+      name,
+      address,
+      invoice,
+      housename,
+      unit,
+      formdate,
+      dateOfHolymass,
+      amount,
+      note,
+    );
+
+    const [result] = await pool.execute(query, [
+      name,
+      address,
+      invoice,
+      housename,
+      unit,
+      formdate,
+      dateOfHolymass,
+      amount,
+      note,
+    ]);
+
+    console.log('Query result:', result); // Log the result to see its structure
+
+    if (result && 'affectedRows' in result) {
+      if (result.affectedRows > 0) {
+        console.log('Form data inserted successfully');
+        event.reply('insert-special-form', 'Form data inserted successfully');
+      } else {
+        console.log('Error: Failed to insert form data');
+        event.reply('insert-special-form', 'Error: Failed to insert form data');
+      }
+    } else {
+      console.log('Error: Unexpected result format');
+      event.reply(
+        'insert-special-form',
+        'An error occurred while inserting form data',
+      );
+    }
+  } catch (error) {
+    console.error('Error inserting form data:', error);
+    event.reply(
+      'insert-special-form',
+      'An error occurred while inserting form data',
+    );
+  }
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -129,8 +197,6 @@ app
   .then(() => {
     createWindow();
     app.on('activate', () => {
-      // On macOS it's common to re-create a window in the app when the
-      // dock icon is clicked and there are no other windows open.
       if (mainWindow === null) createWindow();
     });
   })

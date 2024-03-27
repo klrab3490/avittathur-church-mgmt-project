@@ -21,28 +21,28 @@ function Form2() {
   };
   const emptyInvoiceItem1 = {
     id: crypto.randomUUID().toString(),
-    functionName: 'Ordinary Mass / സാധാരണ കുർബാന',
+    functionName: 'സാധാരണ കുർബാന / Ordinary Mass',
     price: 0,
     Booked: 1,
     total: 0,
   };
   const emptyInvoiceItem2 = {
     id: crypto.randomUUID().toString(),
-    functionName: 'A Solemn Mass / ആഘോഷമായ കു൪ബാന',
+    functionName: 'ആഘോഷമായ കു൪ബാന / A Solemn Mass ',
     price: 0,
     Booked: 1,
     total: 0,
   };
   const emptyInvoiceItem3 = {
     id: crypto.randomUUID().toString(),
-    functionName: ' / ഒപ്പീസ് പള്ളിയിൽ',
+    functionName: 'ഒപ്പീസ് പള്ളിയിൽ',
     price: 0,
     Booked: 1,
     total: 0,
   };
   const emptyInvoiceItem4 = {
     id: crypto.randomUUID().toString(),
-    functionName: ' / ഒപ്പീസ് സെമിത്തേരിയിൽ',
+    functionName: 'ഒപ്പീസ് സെമിത്തേരിയിൽ',
     price: 0,
     Booked: 1,
     total: 0,
@@ -111,26 +111,30 @@ function Form2() {
     setUnit('');
     setBookDate('');
     setNote('');
-    setInvoiceItems([emptyInvoiceItem]);
+    setInvoiceItems([
+      emptyInvoiceItem1,
+      emptyInvoiceItem2,
+      emptyInvoiceItem3,
+      emptyInvoiceItem4,
+    ]);
   };
 
   // form submit
   const handleCreate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const mea = `
-      Invoice Number: S${invoice}
-      Name: ${fname}  ${lname}
-      Address: ${address}
-      House: ${house}
-      Unit: ${unit}
-      Issue Date: ${issueDate}
-      Book Date: ${bookDate}
-      Invoice Items: ${InvoiceItems.map(
-        (item) => `${item.functionName} - ${item.total}`,
-      )}
-      Note: ${note} 
-    `;
-    console.log(mea);
+    const formData = {
+      name: `${fname} ${lname}`,
+      invoice: `N${invoice}`,
+      address,
+      housename: house,
+      unit,
+      formdate: issueDate,
+      dateOfHolymass: bookDate,
+      amount: Total * 1.0,
+      note,
+    };
+
+    window.electron.ipcRenderer.sendInsertSpecialForm(formData);
     clearForm();
   };
 
