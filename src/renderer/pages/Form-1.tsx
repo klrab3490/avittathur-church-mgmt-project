@@ -232,9 +232,9 @@ function Form1() {
             <table className="table-fixed border-separate border-spacing-4">
               <thead>
                 <tr className="font-semibold">
-                  <th className="w-60">Item</th>
+                  <th className="w-96">Item</th>
                   <th className="w-32">Price</th>
-                  <th className="w-32">Booked</th>
+                  <th className="w-24">Booked</th>
                   <th className="w-32">Total Price</th>
                 </tr>
               </thead>
@@ -246,7 +246,7 @@ function Form1() {
                         name="functionName"
                         value={item.functionName}
                         onChange={(e) => handleInputChange(e, item)}
-                        className="p-2 w-60 rounded-lg border-2 border-black/15 bg-bgSecondary"
+                        className="p-2 w-96 rounded-lg border-2 border-black/15 bg-bgSecondary"
                       >
                         <option value="">Select Function</option>
                         {functionData.map((func) => (
@@ -275,7 +275,7 @@ function Form1() {
                         min={1}
                         onChange={(e) => handleInputChange(e, item)}
                         placeholder="Booked Qty."
-                        className="p-2  w-32 rounded-lg border-2 border-black/15 bg-bgSecondary"
+                        className="p-2 w-24 rounded-lg border-2 border-black/15 bg-bgSecondary"
                       />
                     </td>
                     <td>

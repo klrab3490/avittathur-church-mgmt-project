@@ -230,7 +230,7 @@ function Form2() {
                         name="functionName"
                         value={item.functionName}
                         onChange={(e) => handleInputChange(e, item)}
-                        className="p-2 w-60 rounded-lg border-2 border-black/15 bg-bgSecondary"
+                        className="p-2 w-96 rounded-lg border-2 border-black/15 bg-bgSecondary"
                       >
                         <option value="">Select Function</option>
                         {speciaFunction.map((func) => (
