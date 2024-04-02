@@ -19,39 +19,8 @@ function Form2() {
     Booked: 1,
     total: 0,
   };
-  const emptyInvoiceItem1 = {
-    id: crypto.randomUUID().toString(),
-    functionName: 'സാധാരണ കുർബാന / Ordinary Mass',
-    price: 0,
-    Booked: 1,
-    total: 0,
-  };
-  const emptyInvoiceItem2 = {
-    id: crypto.randomUUID().toString(),
-    functionName: 'ആഘോഷമായ കു൪ബാന / A Solemn Mass ',
-    price: 0,
-    Booked: 1,
-    total: 0,
-  };
-  const emptyInvoiceItem3 = {
-    id: crypto.randomUUID().toString(),
-    functionName: 'ഒപ്പീസ് പള്ളിയിൽ',
-    price: 0,
-    Booked: 1,
-    total: 0,
-  };
-  const emptyInvoiceItem4 = {
-    id: crypto.randomUUID().toString(),
-    functionName: 'ഒപ്പീസ് സെമിത്തേരിയിൽ',
-    price: 0,
-    Booked: 1,
-    total: 0,
-  };
   const [InvoiceItems, setInvoiceItems] = useState<InvoiceItemsObject[]>([
-    emptyInvoiceItem1,
-    emptyInvoiceItem2,
-    emptyInvoiceItem3,
-    emptyInvoiceItem4,
+    emptyInvoiceItem,
   ]);
   const [Total, setTotal] = useState(0);
 
@@ -73,7 +42,7 @@ function Form2() {
 
   // Function for handling inputs
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     item: InvoiceItemsObject,
   ) => {
     setInvoiceItems(
@@ -111,12 +80,7 @@ function Form2() {
     setUnit('');
     setBookDate('');
     setNote('');
-    setInvoiceItems([
-      emptyInvoiceItem1,
-      emptyInvoiceItem2,
-      emptyInvoiceItem3,
-      emptyInvoiceItem4,
-    ]);
+    setInvoiceItems([emptyInvoiceItem]);
   };
 
   // form submit
@@ -137,6 +101,13 @@ function Form2() {
     window.electron.ipcRenderer.sendInsertSpecialForm(formData);
     clearForm();
   };
+
+  const speciaFunction = [
+    'സാധാരണ കുർബാന',
+    'ആഘോഷമായ കു൪ബാന',
+    'ഒപ്പീസ് പള്ളിയിൽ',
+    'ഒപ്പീസ് സെമിത്തേരിയിൽ',
+  ];
 
   return (
     <div className="ring-4 ring-bgSecondary p-10 rounded-xl">
@@ -255,14 +226,19 @@ function Form2() {
                 {InvoiceItems.map((item) => (
                   <tr key={item.id}>
                     <td>
-                      <input
-                        type="text"
+                      <select
                         name="functionName"
                         value={item.functionName}
                         onChange={(e) => handleInputChange(e, item)}
-                        placeholder="Function Name"
-                        className="p-2 w-96 rounded-lg border-2 border-black/15 bg-bgSecondary"
-                      />
+                        className="p-2 w-60 rounded-lg border-2 border-black/15 bg-bgSecondary"
+                      >
+                        <option value="">Select Function</option>
+                        {speciaFunction.map((func) => (
+                          <option value={func} key={func}>
+                            {func}
+                          </option>
+                        ))}
+                      </select>
                     </td>
                     <td>
                       <input

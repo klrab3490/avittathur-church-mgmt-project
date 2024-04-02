@@ -42,13 +42,14 @@ function Form1() {
 
   // Function for handling inputs
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     item: InvoiceItemsObject,
   ) => {
+    const updatedFunctionName = e.target.value;
     setInvoiceItems(
       InvoiceItems.map((invoiceItem) =>
         invoiceItem.id === item.id
-          ? { ...invoiceItem, [e.target.name]: e.target.value }
+          ? { ...invoiceItem, functionName: updatedFunctionName }
           : invoiceItem,
       ),
     );
@@ -102,6 +103,28 @@ function Form1() {
     console.log(mea);
     clearForm();
   };
+
+  const functionData = [
+    'സാധാരണ കുർബാന​',
+    'ആഘോഷമായ കുർബാന​',
+    'ഒപ്പീസ് പള്ളിയിൽ',
+    'ഒപ്പീസ് സെമിത്തേരിയിൽ',
+    'ലദീഞ്ഞ്',
+    'നൊവേന',
+    'സ്തോത്രഗീത൦',
+    'വിവാഹ കാഴ്ച',
+    'സമ്മാനത്തിരി',
+    'വെഞ്ചിരിപ്പ്',
+    'ലൈറ്റ്',
+    'വീഡിയോ',
+    'കപ്യാർ സ്പെഷൽ',
+    'ഉണ്ണീശോയുടെ നൊവേനകുർബാന',
+    'തിരുക്കുടു൦ബ നൊവേനകുർബാന',
+    'ഗായകസ൦ഘ൦',
+    'സമർപ്പണ൦',
+    'കസേര',
+    'വീട്ടന്നീദ',
+  ];
 
   return (
     <div className="ring-4 ring-bgSecondary p-10 rounded-xl text-[#236675]">
@@ -209,7 +232,7 @@ function Form1() {
             <table className="table-fixed border-separate border-spacing-4">
               <thead>
                 <tr className="font-semibold">
-                  <th className="w-52">Item</th>
+                  <th className="w-60">Item</th>
                   <th className="w-32">Price</th>
                   <th className="w-32">Booked</th>
                   <th className="w-32">Total Price</th>
@@ -219,14 +242,19 @@ function Form1() {
                 {InvoiceItems.map((item) => (
                   <tr key={item.id}>
                     <td>
-                      <input
-                        type="text"
+                      <select
                         name="functionName"
                         value={item.functionName}
                         onChange={(e) => handleInputChange(e, item)}
-                        placeholder="Function Name"
-                        className="p-2 w-52 rounded-lg border-2 border-black/15 bg-bgSecondary"
-                      />
+                        className="p-2 w-60 rounded-lg border-2 border-black/15 bg-bgSecondary"
+                      >
+                        <option value="">Select Function</option>
+                        {functionData.map((func) => (
+                          <option value={func} key={func}>
+                            {func}
+                          </option>
+                        ))}
+                      </select>
                     </td>
                     <td>
                       <input
