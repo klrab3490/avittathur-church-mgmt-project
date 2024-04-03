@@ -14,7 +14,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import pool from '../database/dbConfig';
+import {connectToMongoDB} from "../database/dbConfig"
 
 class AppUpdater {
   constructor() {
@@ -32,70 +32,12 @@ ipcMain.on('ipc-example', async (event, arg) => {
   event.reply('ipc-example', msgTemplate('pong'));
 });
 
-ipcMain.on('insert-special-form', async (event, formData) => {
+ipcMain.on('connect-to-mongodb', async (event, arg) => {
   try {
-    console.log('Inserting form data:', formData);
-    const query =
-      'INSERT INTO Special_Form (name, address, invoice_no, housename, unit, formdate, dateofHolymass, amount, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    const {
-      name,
-      address,
-      invoice,
-      housename,
-      unit,
-      formdate,
-      dateOfHolymass,
-      amount,
-      note,
-    } = formData;
-    console.log(
-      'Form data:',
-      name,
-      address,
-      invoice,
-      housename,
-      unit,
-      formdate,
-      dateOfHolymass,
-      amount,
-      note,
-    );
-
-    const [result] = await pool.execute(query, [
-      name,
-      address,
-      invoice,
-      housename,
-      unit,
-      formdate,
-      dateOfHolymass,
-      amount,
-      note,
-    ]);
-
-    console.log('Query result:', result); // Log the result to see its structure
-
-    if (result && 'affectedRows' in result) {
-      if (result.affectedRows > 0) {
-        console.log('Form data inserted successfully');
-        event.reply('insert-special-form', 'Form data inserted successfully');
-      } else {
-        console.log('Error: Failed to insert form data');
-        event.reply('insert-special-form', 'Error: Failed to insert form data');
-      }
-    } else {
-      console.log('Error: Unexpected result format');
-      event.reply(
-        'insert-special-form',
-        'An error occurred while inserting form data',
-      );
-    }
+    await connectToMongoDB();
+    event.reply('connect-to-mongodb', 'success');
   } catch (error) {
-    console.error('Error inserting form data:', error);
-    event.reply(
-      'insert-special-form',
-      'An error occurred while inserting form data',
-    );
+    event.reply('connect-to-mongodb', 'error');
   }
 });
 

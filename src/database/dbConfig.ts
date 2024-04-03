@@ -1,13 +1,13 @@
-import mysql, { Pool } from 'mysql2/promise';
+import mongoose from 'mongoose';
 
-const dbConfig: mysql.PoolOptions = {
-  host: '127.0.0.1',
-  port: 3306,
-  user: 'root',
-  password: '2003',
-  database: 'chruch',
-};
+export async function connectToMongoDB(): Promise<void> {
+  const uri = 'mongodb://0.0.0.0:27017/avittathur';
 
-const pool: Pool = mysql.createPool(dbConfig);
-
-export default pool;
+  try {
+    await mongoose.connect(uri)
+    console.log('MongoDB connected successfully');
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error);
+    throw error;
+  }
+}
