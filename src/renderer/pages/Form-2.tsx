@@ -97,8 +97,8 @@ function Form2() {
       amount: Total * 1.0,
       note,
     };
-
-    window.electron.ipcRenderer.sendInsertSpecialForm(formData);
+    console.log(formData);
+    // window.electron.ipcRenderer.sendInsertSpecialForm(formData);
     clearForm();
   };
 
