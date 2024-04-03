@@ -14,6 +14,7 @@ export default function App() {
   useEffect(() => {
     const handleDBConnection = (arg: unknown) => {
       const status = arg === 'success' ? 'connected' : 'error';
+      // eslint-disable-next-line no-console
       console.log(`MongoDB ${status}`);
       setIsDBConnected(arg === 'success');
     };
@@ -27,21 +28,20 @@ export default function App() {
   return (
     <div className="">
       {isDBConnected ? (
-              <Router>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/form-1" element={<Form1 />} />
-                <Route path="/form-2" element={<Form2 />} />
-                <Route path="/certificates" element={<Certificates />} />
-                <Route path="/reports" element={<Reports />} />
-              </Routes>
-            </Router>
-      ):(
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/form-1" element={<Form1 />} />
+            <Route path="/form-2" element={<Form2 />} />
+            <Route path="/certificates" element={<Certificates />} />
+            <Route path="/reports" element={<Reports />} />
+          </Routes>
+        </Router>
+      ) : (
         <div className="flex justify-center items-center h-screen">
           <div className="text-4xl">Connecting to Database...</div>
         </div>
       )}
-
     </div>
   );
 }

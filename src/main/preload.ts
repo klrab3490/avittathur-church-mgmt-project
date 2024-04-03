@@ -21,7 +21,7 @@ const electronHandler = {
     },
     connectToMongoDB: () => {
       ipcRenderer.send('connect-to-mongodb');
-    }
+    },
   },
 };
 

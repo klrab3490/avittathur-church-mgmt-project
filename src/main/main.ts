@@ -14,7 +14,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import {connectToMongoDB} from "../database/dbConfig"
+import connectToMongoDB from '../database/dbConfig';
 
 class AppUpdater {
   constructor() {
@@ -32,7 +32,7 @@ ipcMain.on('ipc-example', async (event, arg) => {
   event.reply('ipc-example', msgTemplate('pong'));
 });
 
-ipcMain.on('connect-to-mongodb', async (event, arg) => {
+ipcMain.on('connect-to-mongodb', async (event) => {
   try {
     await connectToMongoDB();
     event.reply('connect-to-mongodb', 'success');
