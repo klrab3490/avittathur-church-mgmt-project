@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import mongoose from 'mongoose';
 
-export default async function connectToMongoDB(): Promise<void> {
+export async function connectToMongoDB(): Promise<void> {
   const uri = 'mongodb://0.0.0.0:27017/avittathur';
 
   try {
