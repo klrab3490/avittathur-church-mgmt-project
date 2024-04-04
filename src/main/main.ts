@@ -14,9 +14,8 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import { connectToMongoDB } from '../database/dbConfig';
-import { handleInsertSpecialForm } from './ipcHandlers/specialForm';
-import SpecialFormModel from '../database/models/Forms/specialFormModel';
+import {connectToMongoDB} from "../database/dbConfig"
+
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -33,7 +32,7 @@ ipcMain.on('ipc-example', async (event, arg) => {
   event.reply('ipc-example', msgTemplate('pong'));
 });
 
-ipcMain.on('connect-to-mongodb', async (event, arg) => {
+ipcMain.on('connect-to-mongodb', async (event) => {
   try {
     await connectToMongoDB();
     event.reply('connect-to-mongodb', 'success');

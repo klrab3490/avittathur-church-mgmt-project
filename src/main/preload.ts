@@ -34,10 +34,7 @@ const electronHandler = {
     // Connect to MongoDB
     connectToMongoDB: () => {
       ipcRenderer.send('connect-to-mongodb');
-    },
-    sendInsertSpecialForm(formData: any) {
-      ipcRenderer.send('insert-special-form', formData);
-    },
+    }
   },
 };
 

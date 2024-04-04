@@ -98,16 +98,14 @@ function Form2() {
       amount: Total * 1.0,
       note,
     };
-    console.log(formData);
-    const response =  window.electron.ipcRenderer.sendInsertSpecialForm(formData)
 
-    console.log(response);
+    window.electron.ipcRenderer.sendInsertSpecialForm(formData);
     clearForm();
   };
 
   const speciaFunction = [
     'സാധാരണ കുർബാന',
-    'ആഘോഷമായ കു൪ബാന',
+    'ആഘോഷമായ കുർബാന',
     'ഒപ്പീസ് പള്ളിയിൽ',
     'ഒപ്പീസ് സെമിത്തേരിയിൽ',
   ];
