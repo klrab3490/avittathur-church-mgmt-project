@@ -14,8 +14,9 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import {connectToMongoDB} from "../database/dbConfig"
-
+import { connectToMongoDB } from '../database/dbConfig';
+import { handleInsertSpecialForm } from './ipcHandlers/specialForm';
+import SpecialFormModel from '../database/models/Forms/specialFormModel';
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -38,6 +39,25 @@ ipcMain.on('connect-to-mongodb', async (event, arg) => {
     event.reply('connect-to-mongodb', 'success');
   } catch (error) {
     event.reply('connect-to-mongodb', 'error');
+  }
+});
+
+ipcMain.on('insert-special-form', async (event, formData) => {
+  try {
+    console.log('Inserting form data:', formData);
+    const specialForm = new SpecialFormModel(formData);
+    await specialForm.save();
+    event.reply(
+      'insert-special-form',
+      'Form data saved successfully',
+    );
+
+  } catch (error) {
+    console.error('Error inserting form data:', error);
+    event.reply(
+      'insert-special-form',
+      'An error occurred while inserting form data',
+    );
   }
 });
 
@@ -81,8 +101,8 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
-    height: 728,
+    width: 1920,
+    height: 1080,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged

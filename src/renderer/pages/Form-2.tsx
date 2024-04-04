@@ -84,21 +84,24 @@ function Form2() {
   };
 
   // form submit
-  const handleCreate = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = {
       name: `${fname} ${lname}`,
-      invoice: `N${invoice}`,
+      invoice: `S${invoice}`,
       address,
       housename: house,
       unit,
       formdate: issueDate,
       dateOfHolymass: bookDate,
+      invoiceItems: InvoiceItems,
       amount: Total * 1.0,
       note,
     };
+    console.log(formData);
+    const response =  window.electron.ipcRenderer.sendInsertSpecialForm(formData)
 
-    window.electron.ipcRenderer.sendInsertSpecialForm(formData);
+    console.log(response);
     clearForm();
   };
 
