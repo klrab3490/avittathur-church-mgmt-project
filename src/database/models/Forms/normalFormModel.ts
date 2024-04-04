@@ -18,7 +18,7 @@ const InvoiceItemsSchema = new Schema<InvoiceItemsObject>({
   total: Number,
 });
 
-interface SpecialForm extends Document {
+interface NormalForm extends Document {
   name: string;
   invoice: string;
   address: string;
@@ -32,7 +32,7 @@ interface SpecialForm extends Document {
 }
 
 // Define schema for the main form data
-const SpecialFormSchema = new Schema<SpecialForm>({
+const NormalFormSchema = new Schema<NormalForm>({
   name: String,
   invoice: String,
   address: String,
@@ -46,9 +46,9 @@ const SpecialFormSchema = new Schema<SpecialForm>({
 });
 
 // Create and export the model
-const SpecialFormModel = mongoose.model<SpecialForm>(
-  'SpecialForm',
-  SpecialFormSchema,
+const NormalFormModel = mongoose.model<NormalForm>(
+  'NormalForm',
+  NormalFormSchema,
 );
 
-export default SpecialFormModel;
+export default NormalFormModel;

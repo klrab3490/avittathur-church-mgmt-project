@@ -64,7 +64,9 @@ function Form1() {
   const [issueDate, setIssueDate] = useState(
     new Date().toISOString().split('T')[0],
   );
-  const [bookDate, setBookDate] = useState('');
+  const [bookDate, setBookDate] = useState(
+    new Date().toISOString().split('T')[0],
+  );
   const [note, setNote] = useState('');
 
   // form clear
@@ -87,20 +89,19 @@ function Form1() {
   // form submit
   const handleCreate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const mea = `
-      Invoice Number: #N${invoice}
-      Name: ${fname}  ${lname}
-      Address: ${address}
-      House: ${house}
-      Unit: ${unit}
-      Issue Date: ${issueDate}
-      Book Date: ${bookDate}
-      Invoice Items: ${InvoiceItems.map(
-        (item) => `${item.functionName} - ${item.total}`,
-      )}
-      Note: ${note}
-    `;
-    console.log(mea);
+    const formData = {
+      name: `${fname} ${lname}`,
+      invoice: `S${invoice}`,
+      address,
+      housename: house,
+      unit,
+      formdate: issueDate,
+      dateOfHolymass: bookDate,
+      invoiceItems: InvoiceItems,
+      amount: Total * 1.0,
+      note,
+    };
+    window.electron.ipcRenderer.insertNormalForm(formData);
     clearForm();
   };
 

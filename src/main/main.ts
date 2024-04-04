@@ -9,12 +9,14 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
-import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import { autoUpdater } from 'electron-updater';
+import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import {connectToMongoDB} from "../database/dbConfig"
+import { connectToMongoDB } from '../database/dbConfig';
+import SpecialFormModel from '../database/models/Forms/specialFormModel';
+import NormalFormModel from '../database/models/Forms/normalFormModel';
 
 class AppUpdater {
   constructor() {
@@ -46,15 +48,50 @@ ipcMain.on('insert-special-form', async (event, formData) => {
     console.log('Inserting form data:', formData);
     const specialForm = new SpecialFormModel(formData);
     await specialForm.save();
-    event.reply(
-      'insert-special-form',
-      'Form data saved successfully',
-    );
-
+    event.reply('insert-special-form', 'Form data saved successfully');
   } catch (error) {
     console.error('Error inserting form data:', error);
     event.reply(
       'insert-special-form',
+      'An error occurred while inserting form data',
+    );
+  }
+});
+
+ipcMain.on('get-normal-form-invoice-number', async (event) => {
+  try {
+    const latestInvoice = await NormalFormModel.findOne({ formType: 'invoice' })
+      .sort({ _id: -1 })
+      .select('invoice')
+      .exec();
+    // If an invoice exists, return its number
+    if (latestInvoice && latestInvoice.invoice) {
+      event.reply('get-invoice-number', latestInvoice.invoice);
+    } else {
+      // If no invoice exists, send null
+      const invoice = '0000';
+      event.reply('get-invoice-number', invoice);
+    }
+  } catch (error) {
+    // If an error occurs, log the error and send an error message back to the renderer process
+    console.error('Error fetching previous invoice number:', error);
+    event.reply(
+      'get-invoice-number-error',
+      'An error occurred while fetching the invoice number',
+    );
+  }
+});
+
+ipcMain.on('insert-normal-form', async (event, formData) => {
+  try {
+    console.log('Inserting form data:', formData);
+    const normalForm = new NormalFormModel(formData);
+    await normalForm.save();
+    event.reply('insert-normal-form', 'Form data saved successfully');
+  } catch (error) {
+    console.error('Error inserting form data:', error);
+    event.reply(
+      'insert-normal-form',
       'An error occurred while inserting form data',
     );
   }

@@ -63,7 +63,9 @@ function Form2() {
   const [issueDate, setIssueDate] = useState(
     new Date().toISOString().split('T')[0],
   );
-  const [bookDate, setBookDate] = useState('');
+  const [bookDate, setBookDate] = useState(
+    new Date().toISOString().split('T')[0],
+  );
   const [note, setNote] = useState('');
 
   // form clear
@@ -99,7 +101,7 @@ function Form2() {
       note,
     };
 
-    window.electron.ipcRenderer.sendInsertSpecialForm(formData);
+    window.electron.ipcRenderer.insertSpecialForm(formData);
     clearForm();
   };
 

@@ -2,13 +2,12 @@
 
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
-// Define a function to handle the 'insertSpecialForm' IPC channel
-const handleInsertSpecialForm = (formData: any) => {
-  return ipcRenderer.invoke('insertSpecialForm', formData);
-};
-
 // Define the valid channels that can be accessed from the renderer process
-export type Channels = 'ipc-example' | 'connect-to-mongodb' | 'insert-special-form';
+export type Channels =
+  | 'ipc-example'
+  | 'connect-to-mongodb'
+  | 'insert-special-form'
+  | 'insert-normal-form';
 
 // Define the electronHandler object
 const electronHandler = {
@@ -34,7 +33,15 @@ const electronHandler = {
     // Connect to MongoDB
     connectToMongoDB: () => {
       ipcRenderer.send('connect-to-mongodb');
-    }
+    },
+    // Insert special form
+    insertSpecialForm: (formData: unknown) => {
+      ipcRenderer.send('insert-special-form', formData);
+    },
+    // Insert normal form
+    insertNormalForm: (FormData: unknown) => {
+      ipcRenderer.send('insert-normal-form', FormData);
+    },
   },
 };
 
