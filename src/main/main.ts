@@ -14,7 +14,7 @@ import { autoUpdater } from 'electron-updater';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import { connectToMongoDB } from '../database/dbConfig';
+import connectToMongoDB from '../database/dbConfig';
 import SpecialFormModel from '../database/models/Forms/specialFormModel';
 import NormalFormModel from '../database/models/Forms/normalFormModel';
 

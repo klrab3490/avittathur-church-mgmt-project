@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-export async function connectToMongoDB(): Promise<void> {
+export default async function connectToMongoDB(): Promise<void> {
   const uri = 'mongodb://0.0.0.0:27017/avittathur';
   try {
     await mongoose.connect(uri);
