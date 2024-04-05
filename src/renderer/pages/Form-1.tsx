@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
 import { IoIosTrash } from 'react-icons/io';
 import React, { useEffect, useState } from 'react';
 import TopBar from '../components/TopBar';
