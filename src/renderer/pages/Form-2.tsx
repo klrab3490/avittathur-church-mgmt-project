@@ -107,7 +107,7 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
     clearForm();
   };
 
-  const speciaFunction = [
+  const specialFunction = [
     'സാധാരണ കുർബാന',
     'ആഘോഷമായ കുർബാന',
     'ഒപ്പീസ് പള്ളിയിൽ',
@@ -238,7 +238,7 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
                         className="p-2 w-96 rounded-lg border-2 border-black/15 bg-bgSecondary"
                       >
                         <option value="">Select Function</option>
-                        {speciaFunction.map((func) => (
+                        {specialFunction.map((func) => (
                           <option value={func} key={func}>
                             {func}
                           </option>

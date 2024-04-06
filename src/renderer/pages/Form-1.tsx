@@ -17,7 +17,7 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
   const emptyInvoiceItem = {
     id: crypto.randomUUID().toString(),
     functionName: '',
-    price: 100,
+    price: 0,
     Booked: 1,
     total: 0,
   };
@@ -47,11 +47,10 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     item: InvoiceItemsObject,
   ) => {
-    const updatedFunctionName = e.target.value;
     setInvoiceItems(
       InvoiceItems.map((invoiceItem) =>
         invoiceItem.id === item.id
-          ? { ...invoiceItem, functionName: updatedFunctionName }
+          ? { ...invoiceItem, [e.target.name]: e.target.value }
           : invoiceItem,
       ),
     );
@@ -107,7 +106,7 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
     clearForm();
   };
 
-  const functionData = [
+  const normalFunction = [
     'സാധാരണ കുർബാന​',
     'ആഘോഷമായ കുർബാന​',
     'ഒപ്പീസ് പള്ളിയിൽ',
@@ -252,7 +251,7 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
                         className="p-2 w-96 rounded-lg border-2 border-black/15 bg-bgSecondary"
                       >
                         <option value="">Select Function</option>
-                        {functionData.map((func) => (
+                        {normalFunction.map((func) => (
                           <option value={func} key={func}>
                             {func}
                           </option>
@@ -264,7 +263,6 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
                         type="number"
                         name="price"
                         value={item.price}
-                        min={0}
                         onChange={(e) => handleInputChange(e, item)}
                         placeholder="Price"
                         className="p-2 w-32 rounded-lg border-2 border-black/15 bg-bgSecondary"
@@ -278,7 +276,7 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
                         min={1}
                         onChange={(e) => handleInputChange(e, item)}
                         placeholder="Booked Qty."
-                        className="p-2 w-24 rounded-lg border-2 border-black/15 bg-bgSecondary"
+                        className="p-2  w-32 rounded-lg border-2 border-black/15 bg-bgSecondary"
                       />
                     </td>
                     <td>
