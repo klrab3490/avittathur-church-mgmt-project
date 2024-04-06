@@ -9,12 +9,12 @@ function Home() {
         <h2 className="text-textPrimary font-bold text-2xl">Church Services</h2>
         <div className="py-10 grid grid-cols-1 md:grid-cols-2 md:gap-x-40 gap-10">
           <MenuChip
-            title="Form - 1"
+            title="Normal Form"
             route="/form-1"
             description="Description"
           />
           <MenuChip
-            title="Form - 2"
+            title="Special Form"
             route="/form-2"
             description="Description"
           />
