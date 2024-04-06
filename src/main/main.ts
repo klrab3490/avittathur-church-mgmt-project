@@ -58,27 +58,31 @@ ipcMain.on('insert-special-form', async (event, formData) => {
   }
 });
 
-ipcMain.on('get-normal-form-invoice-number', async (event) => {
+ipcMain.on('fetch-special-form-invoice', async (event) => {
   try {
-    const latestInvoice = await NormalFormModel.findOne({ formType: 'invoice' })
+    // Query the database to fetch the latest inserted form data
+    const latestFormDataSP = await SpecialFormModel.findOne()
       .sort({ _id: -1 })
       .select('invoice')
       .exec();
-    // If an invoice exists, return its number
-    if (latestInvoice && latestInvoice.invoice) {
-      event.reply('get-invoice-number', latestInvoice.invoice);
+    console.log('Special Form Last Invoice Number :', latestFormDataSP);
+    if (latestFormDataSP) {
+      event.reply('fetch-special-form-invoice', {
+        success: true,
+        data: latestFormDataSP.invoice,
+      });
     } else {
-      // If no invoice exists, send null
-      const invoice = '0000';
-      event.reply('get-invoice-number', invoice);
+      event.reply('fetch-special-form-invoice', {
+        success: false,
+        message: 'No data found',
+      });
     }
   } catch (error) {
-    // If an error occurs, log the error and send an error message back to the renderer process
-    console.error('Error fetching previous invoice number:', error);
-    event.reply(
-      'get-invoice-number-error',
-      'An error occurred while fetching the invoice number',
-    );
+    console.error('Error fetching latest form data:', error);
+    event.reply('fetch-special-form-invoice', {
+      success: false,
+      message: 'An error occurred while fetching data',
+    });
   }
 });
 
@@ -94,6 +98,34 @@ ipcMain.on('insert-normal-form', async (event, formData) => {
       'insert-normal-form',
       'An error occurred while inserting form data',
     );
+  }
+});
+
+ipcMain.on('fetch-normal-form-invoice', async (event) => {
+  try {
+    // Query the database to fetch the last inserted form data invoice number
+    const latestFormDataNF = await NormalFormModel.findOne()
+      .sort({ _id: -1 })
+      .select('invoice')
+      .exec();
+    console.log('Normal Form Last Invoice Number :', latestFormDataNF);
+    if (latestFormDataNF) {
+      event.reply('fetch-normal-form-invoice', {
+        success: true,
+        data: latestFormDataNF.invoice,
+      });
+    } else {
+      event.reply('fetch-normal-form-invoice', {
+        success: false,
+        message: 'No data found',
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching latest form data:', error);
+    event.reply('fetch-normal-form-invoice', {
+      success: false,
+      message: 'An error occurred while fetching data',
+    });
   }
 });
 

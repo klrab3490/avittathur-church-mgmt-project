@@ -7,7 +7,9 @@ export type Channels =
   | 'ipc-example'
   | 'connect-to-mongodb'
   | 'insert-special-form'
-  | 'insert-normal-form';
+  | 'fetch-special-form-invoice'
+  | 'insert-normal-form'
+  | 'fetch-normal-form-invoice';
 
 // Define the electronHandler object
 const electronHandler = {
@@ -38,9 +40,17 @@ const electronHandler = {
     insertSpecialForm: (formData: unknown) => {
       ipcRenderer.send('insert-special-form', formData);
     },
+    // Fetch last invoice number from special form
+    fetchSpecialFormInvoice: () => {
+      ipcRenderer.send('fetch-special-form-invoice');
+    },
     // Insert normal form
     insertNormalForm: (FormData: unknown) => {
       ipcRenderer.send('insert-normal-form', FormData);
+    },
+    // Fetch last invoice number from normal form
+    fetchNormalFormInvoice: () => {
+      ipcRenderer.send('fetch-normal-form-invoice');
     },
   },
 };

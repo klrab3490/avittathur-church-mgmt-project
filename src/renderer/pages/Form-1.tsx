@@ -10,8 +10,10 @@ interface InvoiceItemsObject {
   total: number;
 }
 
-function Form1() {
-  const [invoice, setInvoice] = useState('0000');
+function Form1({ lastinvoice }: { lastinvoice: number }) {
+  const [invoice, setInvoice] = useState(
+    (lastinvoice + 1).toString().padStart(4, '0'),
+  );
   const emptyInvoiceItem = {
     id: crypto.randomUUID().toString(),
     functionName: '',
