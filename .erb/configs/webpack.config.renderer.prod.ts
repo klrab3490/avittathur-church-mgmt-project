@@ -71,6 +71,12 @@ const configuration: webpack.Configuration = {
         ],
         exclude: /\.module\.s?(c|a)ss$/,
       },
+      {
+        test: /\.(node)$/,
+        use: {
+          loader: 'node-loader',
+        },
+      },
       // Fonts
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
