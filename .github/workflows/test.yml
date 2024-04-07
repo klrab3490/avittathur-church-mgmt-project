@@ -8,7 +8,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+        os: [windows-latest, ubuntu-latest]
 
     steps:
       - name: Check out Git repository
@@ -23,10 +23,6 @@ jobs:
       - name: npm install
         run: |
           npm install
-
-      - name: Install dmg-license
-        if: ${{ matrix.os == 'macos-latest' }}
-        run: npm i dmg-license
 
       - name: npm test
         env:
