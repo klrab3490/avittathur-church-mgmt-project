@@ -148,6 +148,10 @@ const configuration: webpack.Configuration = {
       'process.type': '"renderer"',
     }),
   ],
+  externals: {
+    // Exclude iconv-corefoundation from bundling
+    'iconv-corefoundation': 'commonjs iconv-corefoundation',
+  },
 };
 
 export default merge(baseConfig, configuration);
