@@ -1,13 +1,12 @@
+import { useEffect, useState } from 'react';
+import { Route, MemoryRouter as Router, Routes } from 'react-router-dom';
 import 'tailwindcss/tailwind.css';
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import './App.css';
-import Home from './pages/Home';
+import Certificates from './pages/Certificates';
 import Form1 from './pages/Form-1';
 import Form2 from './pages/Form-2';
+import Home from './pages/Home';
 import Reports from './pages/Reports';
-import Certificates from './pages/Certificates';
-import { set } from 'mongoose';
 
 export default function App() {
   const [isDBConnected, setIsDBConnected] = useState(false);
@@ -18,8 +17,6 @@ export default function App() {
 
   useEffect(() => {
     const handleDBConnection = (arg: unknown) => {
-      const status = arg === 'success' ? 'connected' : 'error';
-      console.log('MongoDB', status);
       setIsDBConnected(arg === 'success');
     };
 
@@ -35,15 +32,12 @@ export default function App() {
         if (event.success) {
           if (event.data === null || event.data === undefined) {
             setFetchError(true);
-            console.error('No data found');
           } else {
             setFetchError(false);
             setInvoiceSF(event.data);
-            console.log('Latest form data:', event.data);
           }
         } else {
           setFetchError(true);
-          console.error('Failed to fetch latest form data:', event.message);
         }
       },
     );
@@ -55,15 +49,12 @@ export default function App() {
         if (event.success) {
           if (event.data === null || event.data === undefined) {
             setFetchError(true);
-            console.error('No data found');
           } else {
             setFetchError(false);
             setInvoiceNF(event.data);
-            console.log('Latest form data:', event.data);
           }
         } else {
           setFetchError(true);
-          console.error('Failed to fetch latest form data:', event.message);
         }
       },
     );
@@ -74,10 +65,8 @@ export default function App() {
         if (event.success) {
           setFetchError(false);
           setDataSF(event.data);
-          console.log('Latest form data:', event.data);
         } else {
           setFetchError(true);
-          console.error('Failed to fetch latest form data:', event.message);
         }
       },
     );

@@ -28,12 +28,6 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
-});
-
 ipcMain.on('connect-to-mongodb', async (event) => {
   try {
     await connectToMongoDB();
@@ -93,6 +87,7 @@ ipcMain.on('fetch-special-form-data', async (event) => {
     // Convert ObjectId to string
     specialFormData = specialFormData.map((doc) => {
       const document = doc.toObject();
+      // eslint-disable-next-line no-underscore-dangle
       document._id = parseInt(document._id, 10);
       return document;
     });
