@@ -33,7 +33,7 @@ jobs:
           npm test
       - name: ls
         run: |
-          ls
+          ls release/build
           pwd
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
