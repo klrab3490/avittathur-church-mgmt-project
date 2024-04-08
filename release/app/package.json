@@ -1,12 +1,12 @@
 {
-  "name": "electron-react-boilerplate",
-  "version": "4.6.0",
-  "description": "A foundation for scalable desktop apps",
+  "name": "avittathur-church-management-app",
+  "version": "1.0.0",
+  "description": "Church Management app for Avittathur Holy Family Church",
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://github.com/electron-react-boilerplate"
+    "name": "CSE Sahrdaya",
+    "email": "aces@sahrdaya.ac.in",
+    "url": "https://github.com/vivekkj123/avittathur-church-mgmt-project"
   },
   "main": "./dist/main/main.js",
   "scripts": {

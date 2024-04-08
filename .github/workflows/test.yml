@@ -37,11 +37,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: setup-exe
-          path: release/build/ElectronReact Setup 4.6.0.exe
+          path: release/build/Avittathur Holy Family Church App Setup 1.0.0.exe
 
       - name: Upload Build Artifact
         if: startsWith(matrix.os, 'ubuntu')
         uses: actions/upload-artifact@v4
         with:
           name: setup-appimage
-          path: release/build/ElectronReact-4.6.0.AppImage
+          path: release/build/Avittathur Holy Family Church App-1.0.0.AppImage

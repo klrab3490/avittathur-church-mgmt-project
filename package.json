@@ -1,35 +1,35 @@
 {
-  "description": "A foundation for scalable desktop apps",
+  "description": "Church Management app for Avittathur Holy Family Church",
   "keywords": [
-    "electron",
-    "boilerplate",
-    "react",
-    "typescript",
-    "ts",
-    "sass",
-    "webpack",
-    "hot",
-    "reload"
+    "avittathur",
+    "church"
   ],
-  "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
-  "bugs": {
-    "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
-  },
+  "homepage": "https://github.com/vivekkj123/avittathur-church-mgmt-project",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
+    "url": "https://github.com/vivekkj123/avittathur-church-mgmt-project"
   },
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://electron-react-boilerplate.js.org"
+    "name": "CSE Sahrdaya",
+    "email": "aces@sahrdaya.ac.in",
+    "url": "https://sahrdaya.ac.in/cse"
   },
   "contributors": [
     {
-      "name": "Amila Welihinda",
-      "email": "amilajack@gmail.com",
-      "url": "https://github.com/amilajack"
+      "name": "Joel Jaison",
+      "email": "joeljaison394@gmail.com",
+      "url": "https://joeljaison.me/"
+    },
+    {
+      "name": "Vivek K J",
+      "email": "contact@vivekkj.in",
+      "url": "https://vivekkj.in"
+    },
+    {
+      "name": "Rahul A B",
+      "email": "rahulbushi69@gmail.com",
+      "url": "https://rahulab.live"
     }
   ],
   "main": "./src/main/main.ts",
@@ -178,8 +178,8 @@
     "webpack-merge": "^5.9.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "Avittathur Holy Family Church App",
+    "appId": "org.aces.avittathur.app",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -237,12 +237,9 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "vivekkj123",
+      "repo": "avittathur-church-mgmt-project"
     }
-  },
-  "collective": {
-    "url": "https://opencollective.com/electron-react-boilerplate-594"
   },
   "devEngines": {
     "node": ">=14.x",
