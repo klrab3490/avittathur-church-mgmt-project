@@ -11,16 +11,16 @@ interface InvoiceItemsObject {
 
 interface Report {
   id: number;
-  name: string;
-  invoice: string;
-  address: string;
-  housename: string;
-  unit: string;
+  name: String;
+  invoice: String;
+  address: String;
+  housename: String;
+  unit: String;
   formdate: Date;
   dateOfHolymass: Date;
   amount: number;
-  note: string;
-  invoiceItems: InvoiceItemsObject[];
+  note: String;
+  invoiceItems: [InvoiceItemsObject];
 }
 
 function SpecialReport({ data }: { data: Report[] }) {
