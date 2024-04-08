@@ -25,14 +25,13 @@ interface Report {
 }
 
 function ReportNF({ normalForm }: { normalForm: Report[] }) {
-  const [report, setReport] = useState('');
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
 
   // function to handle search
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (report && from && to) {
+    if (from && to) {
       return true;
     }
     return false;
