@@ -3,34 +3,40 @@ name: Test
 on: [push, pull_request]
 
 jobs:
-  test:
-    runs-on: ${{ matrix.os }}
+ test:
+  runs-on: ${{ matrix.os }}
 
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest]
+  strategy:
+   matrix:
+    os: [windows-latest, ubuntu-latest]
 
-    steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v3
+  steps:
+   - name: Check out Git repository
+    uses: actions/checkout@v3
 
-      - name: Install Node.js and NPM
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: npm
+   - name: Install Node.js and NPM
+    uses: actions/setup-node@v3
+    with:
+     node-version: 18
+     cache: npm
 
-      - name: npm install
-        run: |
-          npm install
+   - name: npm install
+    run: |
+     npm install
 
-      - name: npm test
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npm run package
-          npm run lint
-          npm exec tsc
-          npm test
+   - name: npm test
+    env:
+     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    run: |
+     npm run package
+     npm run lint
+     npm exec tsc
+     npm test
 
-
+   - name: Upload Build Artifact
+    uses: actions/upload-artifact@v3
+    with:
+     name: build-output
+     path: |
+         release/build/ElectronReact-4.6.0.AppImage  # For Linux
+         release/build/ElectronReact Setup 4.6.0.exe  # For Windows
