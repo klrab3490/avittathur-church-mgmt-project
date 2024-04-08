@@ -31,14 +31,10 @@ jobs:
           npm run lint
           npm exec tsc
           npm test
-      - name: ls
-        run: |
-          ls release/build
-          pwd
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: build-output
           path: |
-            release/build/ElectronReact-4.6.0.AppImage  # For Linux
-            release/build/ElectronReact\ Setup\ 4.6.0.exe  # For Windows
+            release/build/ElectronReact-4.6.0.AppImage
+            release/build/ElectronReact\ Setup\ 4.6.0.exe
