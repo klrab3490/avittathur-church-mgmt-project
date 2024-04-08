@@ -156,6 +156,39 @@ ipcMain.on('fetch-normal-form-invoice', async (event) => {
   }
 });
 
+ipcMain.on('fetch-normal-form-data', async (event) => {
+  try {
+    let normalFormData = await NormalFormModel.find().exec();
+
+    // Convert ObjectId to string
+    normalFormData = normalFormData.map((doc) => {
+      const document = doc.toObject();
+      // eslint-disable-next-line no-underscore-dangle
+      document._id = parseInt(document._id, 10);
+      return document;
+    });
+
+    console.log('Data: ', normalFormData);
+    if (normalFormData) {
+      event.reply('fetch-normal-form-data', {
+        success: true,
+        data: normalFormData,
+      });
+    } else {
+      event.reply('fetch-normal-form-data', {
+        success: false,
+        message: 'No data found',
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching special form data:', error);
+    event.reply('fetch-normal-form-data', {
+      success: false,
+      message: 'An error occurred while fetching data',
+    });
+  }
+});
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();

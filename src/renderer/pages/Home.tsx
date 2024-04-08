@@ -18,14 +18,19 @@ function Home() {
             route="/form-2"
             description="Description"
           />
-          <MenuChip
+          {/* <MenuChip
             title="Certificates"
             route="/certificates"
             description="Description"
+          /> */}
+          <MenuChip
+            title="Normal Form Report"
+            route="/reportNF"
+            description="Description"
           />
           <MenuChip
-            title="Reports"
-            route="/reports"
+            title="Special Form Reports"
+            route="/reportSF"
             description="Description"
           />
         </div>
@@ -36,12 +41,12 @@ function Home() {
           <div className="py-4 grid grid-cols-1 md:grid-cols-2 md:gap-x-40 gap-10">
             <MenuChip
               title="Sync to Cloud"
-              route="/form-1"
+              route="/"
               description="Description"
             />
             <MenuChip
               title="Backup from Cloud"
-              route="/form-2"
+              route="/"
               description="Description"
             />
           </div>

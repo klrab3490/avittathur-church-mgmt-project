@@ -1,5 +1,5 @@
 import { IoIosTrash } from 'react-icons/io';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import TopBar from '../components/TopBar';
 
 interface InvoiceItemsObject {
@@ -25,6 +25,13 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
     emptyInvoiceItem,
   ]);
   const [Total, setTotal] = useState(0);
+  const [statusMessage, setStatusMessage] = useState('');
+  const [status, setStatus] = useState(false);
+
+  // Function to scroll to the top of the page
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Update total and calculate price*qty whenever change in items
   useEffect(() => {
@@ -44,16 +51,20 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
 
   // Function for handling inputs
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     item: InvoiceItemsObject,
   ) => {
-    setInvoiceItems(
-      InvoiceItems.map((invoiceItem) =>
-        invoiceItem.id === item.id
-          ? { ...invoiceItem, [e.target.name]: e.target.value }
-          : invoiceItem,
-      ),
-    );
+    const { name, value } = e.target;
+    // Check if the input value is not empty after trimming whitespace
+    if (value.trim() !== '') {
+      setInvoiceItems(
+        InvoiceItems.map((invoiceItem) =>
+          invoiceItem.id === item.id
+            ? { ...invoiceItem, [name]: value }
+            : invoiceItem,
+        ),
+      );
+    }
   };
 
   // form data
@@ -88,7 +99,7 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
   };
 
   // form submit
-  const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleCreate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = {
       name: `${fname} ${lname}`,
@@ -98,13 +109,26 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
       unit,
       formdate: issueDate,
       dateOfHolymass: bookDate,
-      invoiceItems: InvoiceItems,
+      invoiceItems: InvoiceItems.filter(
+        (item) =>
+          item.functionName !== '' && item.price !== 0 && item.Booked !== 0,
+      ), // Filter out empty entries
       amount: Total * 1.0,
       note,
     };
-
-    window.electron.ipcRenderer.insertSpecialForm(formData);
-    clearForm();
+    if (formData.invoiceItems.length > 0) {
+      window.electron.ipcRenderer.insertSpecialForm(formData);
+      setStatus(true);
+      setStatusMessage('Invoice created successfully');
+      clearForm();
+    } else {
+      setStatus(false);
+      setStatusMessage(
+        'Please fill in all fields for at least one invoice item',
+      );
+    }
+    scrollToTop();
+    setTimeout(() => setStatusMessage(''), 4000); // Clear status message after 3 seconds
   };
 
   const specialFunction = [
@@ -121,6 +145,17 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
         onSubmit={handleCreate}
         className="flex flex-col gap-3 py-10 px-5 text-[#236675]"
       >
+        {statusMessage && (
+          <div
+            className={`p-3 rounded-md mb-4 ${
+              status
+                ? 'bg-green-200 text-green-800'
+                : 'bg-red-200 text-red-800 '
+            }`}
+          >
+            {statusMessage}
+          </div>
+        )}
         <div className="flex justify-between">
           <span className="text-2xl font-bold">Special Form</span>
           <span className="text-xl">Invoice Number #S{invoice}</span>

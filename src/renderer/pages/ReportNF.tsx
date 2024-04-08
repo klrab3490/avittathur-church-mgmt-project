@@ -1,6 +1,6 @@
 import { useState, FormEvent } from 'react';
 import TopBar from '../components/TopBar';
-import SpecialReport from '../components/SpecialReport';
+import NormalReport from '../components/NormalReport';
 
 // Define interface for your form data
 interface InvoiceItemsObject {
@@ -24,7 +24,7 @@ interface Report {
   invoiceItems: [InvoiceItemsObject];
 }
 
-function Reports({ specialForm }: { specialForm: Report[] }) {
+function ReportNF({ normalForm }: { normalForm: Report[] }) {
   const [report, setReport] = useState('');
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
@@ -45,20 +45,7 @@ function Reports({ specialForm }: { specialForm: Report[] }) {
         onSubmit={handleSearch}
         className="flex flex-col gap-3 py-10 px-5 text-[#236675]"
       >
-        <span className="text-2xl font-bold">Reports</span>
-        {/* Invoice Report Type */}
-        <div className="flex flex-col">
-          <span className="text-xl font-bold mb-4 mt-8">Select Report</span>
-          <select
-            value={report}
-            onChange={(e) => setReport(e.target.value)}
-            className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
-          >
-            <option value="">Select Report</option>
-            <option value="normal">Normal Report</option>
-            <option value="special">Special Report</option>
-          </select>
-        </div>
+        <span className="text-2xl font-bold">Normal Form Reports</span>
         {/* Duration */}
         <div className="flex flex-col">
           <span className="text-xl font-bold mb-4 mt-8">Select Duration</span>
@@ -93,9 +80,9 @@ function Reports({ specialForm }: { specialForm: Report[] }) {
           Generate Report
         </button>
       </form>
-      <SpecialReport data={specialForm} />
+      <NormalReport data={normalForm} />
     </div>
   );
 }
 
-export default Reports;
+export default ReportNF;

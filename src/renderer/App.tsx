@@ -6,13 +6,15 @@ import Certificates from './pages/Certificates';
 import Form1 from './pages/Form-1';
 import Form2 from './pages/Form-2';
 import Home from './pages/Home';
-import Reports from './pages/Reports';
+import ReportNF from './pages/ReportNF';
+import ReportSF from './pages/ReportSF';
 
 export default function App() {
   const [isDBConnected, setIsDBConnected] = useState(false);
   const [fetchError, setFetchError] = useState(false);
   const [invoiceSF, setInvoiceSF] = useState('');
   const [invoiceNF, setInvoiceNF] = useState('');
+  const [dataNF, setDataNF] = useState([]);
   const [dataSF, setDataSF] = useState([]);
 
   useEffect(() => {
@@ -42,6 +44,18 @@ export default function App() {
       },
     );
     window.electron.ipcRenderer.fetchSpecialFormInvoice();
+    window.electron.ipcRenderer.once(
+      'fetch-special-form-data',
+      (event: any) => {
+        if (event.success) {
+          setFetchError(false);
+          setDataSF(event.data);
+        } else {
+          setFetchError(true);
+        }
+      },
+    );
+    window.electron.ipcRenderer.fetchSpecialFormData();
     // normal form: invoice number
     window.electron.ipcRenderer.once(
       'fetch-normal-form-invoice',
@@ -59,18 +73,15 @@ export default function App() {
       },
     );
     window.electron.ipcRenderer.fetchNormalFormInvoice();
-    window.electron.ipcRenderer.once(
-      'fetch-special-form-data',
-      (event: any) => {
-        if (event.success) {
-          setFetchError(false);
-          setDataSF(event.data);
-        } else {
-          setFetchError(true);
-        }
-      },
-    );
-    window.electron.ipcRenderer.fetchSpecialFormData();
+    window.electron.ipcRenderer.once('fetch-normal-form-data', (event: any) => {
+      if (event.success) {
+        setFetchError(false);
+        setDataNF(event.data);
+      } else {
+        setFetchError(true);
+      }
+    });
+    window.electron.ipcRenderer.fetchNormalFormData();
   }, []);
   const invoiceNumberSF = parseInt(invoiceSF.slice(1), 10);
   const invoiceNumberNF = parseInt(invoiceNF.slice(1), 10);
@@ -102,7 +113,14 @@ export default function App() {
               element={<Form2 lastinvoice={invoiceNumberSF} />}
             />
             <Route path="/certificates" element={<Certificates />} />
-            <Route path="/reports" element={<Reports specialForm={dataSF} />} />
+            <Route
+              path="/reportNF"
+              element={<ReportNF normalForm={dataNF} />}
+            />
+            <Route
+              path="/reportSF"
+              element={<ReportSF specialForm={dataSF} />}
+            />
           </Routes>
         </Router>
       )}

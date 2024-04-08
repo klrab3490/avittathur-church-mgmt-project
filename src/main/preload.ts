@@ -10,7 +10,8 @@ export type Channels =
   | 'fetch-special-form-invoice'
   | 'fetch-special-form-data'
   | 'insert-normal-form'
-  | 'fetch-normal-form-invoice';
+  | 'fetch-normal-form-invoice'
+  | 'fetch-normal-form-data';
 
 // Define the electronHandler object
 const electronHandler = {
@@ -55,6 +56,9 @@ const electronHandler = {
     // Fetch last invoice number from normal form
     fetchNormalFormInvoice: () => {
       ipcRenderer.send('fetch-normal-form-invoice');
+    },
+    fetchNormalFormData: () => {
+      ipcRenderer.send('fetch-normal-form-data');
     },
   },
 };
