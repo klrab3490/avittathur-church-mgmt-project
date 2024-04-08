@@ -86,6 +86,38 @@ ipcMain.on('fetch-special-form-invoice', async (event) => {
   }
 });
 
+ipcMain.on('fetch-special-form-data', async (event) => {
+  try {
+    let specialFormData = await SpecialFormModel.find().exec();
+
+    // Convert ObjectId to string
+    specialFormData = specialFormData.map((doc) => {
+      const document = doc.toObject();
+      document._id = parseInt(document._id, 10);
+      return document;
+    });
+
+    console.log('Data: ', specialFormData);
+    if (specialFormData) {
+      event.reply('fetch-special-form-data', {
+        success: true,
+        data: specialFormData,
+      });
+    } else {
+      event.reply('fetch-special-form-data', {
+        success: false,
+        message: 'No data found',
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching special form data:', error);
+    event.reply('fetch-special-form-data', {
+      success: false,
+      message: 'An error occurred while fetching data',
+    });
+  }
+});
+
 ipcMain.on('insert-normal-form', async (event, formData) => {
   try {
     console.log('Inserting form data:', formData);

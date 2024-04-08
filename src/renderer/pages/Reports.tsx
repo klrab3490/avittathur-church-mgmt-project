@@ -1,17 +1,38 @@
-import React, { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import TopBar from '../components/TopBar';
 import SpecialReport from '../components/SpecialReport';
 
-function Reports() {
+// Define interface for your form data
+interface InvoiceItemsObject {
+  id: string;
+  functionName: string;
+  price: number;
+  Booked: number;
+  total: number;
+}
+interface Report {
+  id: number;
+  name: String;
+  invoice: String;
+  address: String;
+  housename: String;
+  unit: String;
+  formdate: Date;
+  dateOfHolymass: Date;
+  amount: number;
+  note: String;
+  invoiceItems: [InvoiceItemsObject];
+}
+
+function Reports({ specialForm }: { specialForm: Report[] }) {
   const [report, setReport] = useState('');
-  const [range, setRange] = useState('');
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
 
   // function to handle search
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if ((report && range) || (report && from && to)) {
+    if (report && from && to) {
       return true;
     }
     return false;
@@ -42,24 +63,6 @@ function Reports() {
         <div className="flex flex-col">
           <span className="text-xl font-bold mb-4 mt-8">Select Duration</span>
           <div className="flex justify-center items-center gap-5">
-            <div className="flex flex-col">
-              <span>Range</span>
-              <select
-                onChange={(e) => setRange(e.target.value)}
-                className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
-              >
-                <option value="">Select Duration</option>
-                <option value="today">Today</option>
-                <option value="yesterday">Yesterday</option>
-                <option value="last7days">Last 7 Days</option>
-                <option value="last30days">Last 30 Days</option>
-                <option value="last90days">Last 90 Days</option>
-                <option value="last365days">Last 365 Days</option>
-              </select>
-            </div>
-            <span className="text-2xl flex flex-col text-center justify-center">
-              Or
-            </span>
             <div className="flex gap-4 ">
               <div className="flex flex-col">
                 <span>From</span>
@@ -90,7 +93,7 @@ function Reports() {
           Generate Report
         </button>
       </form>
-      <SpecialReport />
+      <SpecialReport data={specialForm} />
     </div>
   );
 }

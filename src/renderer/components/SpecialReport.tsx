@@ -1,41 +1,43 @@
 import { useState } from 'react';
 
-interface Report {
-  id: number;
-  invoice: string;
-  customerName: string;
-  date: string;
-  amount: number;
+// Define interface for your form data
+interface InvoiceItemsObject {
+  id: string;
+  functionName: string;
+  price: number;
+  Booked: number;
+  total: number;
 }
 
-const testDataSet: Report[] = [
-  {
-    id: 1,
-    invoice: 'INV-0001',
-    customerName: 'John Doe',
-    date: '2024-03-03',
-    amount: 1000,
-  },
-  {
-    id: 2,
-    invoice: 'INV-0002',
-    customerName: 'Jane Smith',
-    date: '2024-03-10',
-    amount: 1500,
-  },
-  {
-    id: 3,
-    invoice: 'INV-0003',
-    customerName: 'Alice Johnson',
-    date: '2024-03-18',
-    amount: 2000,
-  },
-];
+interface Report {
+  id: number;
+  name: string;
+  invoice: string;
+  address: string;
+  housename: string;
+  unit: string;
+  formdate: Date;
+  dateOfHolymass: Date;
+  amount: number;
+  note: string;
+  invoiceItems: InvoiceItemsObject[];
+}
 
-function SpecialReport() {
-  const [data] = useState<Report[]>(testDataSet); // Fixed initialization of data state
+function SpecialReport({ data }: { data: Report[] }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
-    <div className="flex justify-center items-center text-xl">
+    <div className="flex flex-col justify-center items-center text-xl">
       <table>
         <thead>
           <tr className="bg-[#236675] text-white">
@@ -46,13 +48,13 @@ function SpecialReport() {
             <th className="w-32">Unit Name</th>
             <th className="w-32">Billed Date</th>
             <th className="w-32">Mass Date</th>
-            <th className="w-52">Invoiced Items</th>
+            <th className="w-72">Invoiced Items</th>
             <th className="w-32">Amount</th>
-            <th className="w-40">Actions</th>
+            <th className="w-24">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
+          {currentItems.map((item, index) => (
             <tr
               key={item.id}
               className={
@@ -62,15 +64,25 @@ function SpecialReport() {
               }
             >
               <td className="text-center">{item.invoice}</td>
-              <td>{item.customerName}</td>
-              <td>A</td>
-              <td>A</td>
-              <td>A</td>
-              <td className="text-center">{item.date}</td>
-              <td className="text-center">{item.date}</td>
-              <td>A</td>
+              <td>{item.name}</td>
+              <td>{item.address}</td>
+              <td>{item.housename}</td>
+              <td>{item.unit}</td>
+              <td className="text-center">
+                {new Date(item.formdate).toDateString()}
+              </td>
+              <td className="text-center">
+                {new Date(item.dateOfHolymass).toDateString()}
+              </td>
+              <td className="text-center">
+                <ul className="">
+                  {item.invoiceItems.map((invoiceItem) => (
+                    <li key={invoiceItem.id}>{invoiceItem.functionName}</li>
+                  ))}
+                </ul>
+              </td>
               <td className="text-center">{item.amount}</td>
-              <td className="flex gap-2 justify-center items-center">
+              <td className="flex flex-col gap-2 justify-center items-center text-center">
                 <div>View</div>
                 <div>Download</div>
               </td>
@@ -78,6 +90,28 @@ function SpecialReport() {
           ))}
         </tbody>
       </table>
+      <div className="mt-5 flex gap-2">
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+          (pageNumber) => (
+            <div
+              key={pageNumber}
+              className="flex items-stretch justify-between text-3xl bg-[#236675] text-white rounded-lg hover:bg-[#75cbe7]"
+            >
+              <button
+                type="button"
+                onClick={() => handlePageChange(pageNumber)}
+                className={
+                  currentPage === pageNumber
+                    ? 'bg-[#1a4e5f] w-12 h-12 flex items-center justify-center rounded-xl'
+                    : 'flex rounded-xl w-12 h-12 items-center justify-center'
+                }
+              >
+                {pageNumber}
+              </button>
+            </div>
+          ),
+        )}
+      </div>
     </div>
   );
 }

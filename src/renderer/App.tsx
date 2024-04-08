@@ -7,12 +7,14 @@ import Form1 from './pages/Form-1';
 import Form2 from './pages/Form-2';
 import Reports from './pages/Reports';
 import Certificates from './pages/Certificates';
+import { set } from 'mongoose';
 
 export default function App() {
   const [isDBConnected, setIsDBConnected] = useState(false);
   const [fetchError, setFetchError] = useState(false);
   const [invoiceSF, setInvoiceSF] = useState('');
   const [invoiceNF, setInvoiceNF] = useState('');
+  const [dataSF, setDataSF] = useState([]);
 
   useEffect(() => {
     const handleDBConnection = (arg: unknown) => {
@@ -27,7 +29,7 @@ export default function App() {
       handleDBConnection as (...args: unknown[]) => void,
     );
     // special form: invoice number
-    window.electron.ipcRenderer.on(
+    window.electron.ipcRenderer.once(
       'fetch-special-form-invoice',
       (event: any) => {
         if (event.success) {
@@ -66,6 +68,20 @@ export default function App() {
       },
     );
     window.electron.ipcRenderer.fetchNormalFormInvoice();
+    window.electron.ipcRenderer.once(
+      'fetch-special-form-data',
+      (event: any) => {
+        if (event.success) {
+          setFetchError(false);
+          setDataSF(event.data);
+          console.log('Latest form data:', event.data);
+        } else {
+          setFetchError(true);
+          console.error('Failed to fetch latest form data:', event.message);
+        }
+      },
+    );
+    window.electron.ipcRenderer.fetchSpecialFormData();
   }, []);
   const invoiceNumberSF = parseInt(invoiceSF.slice(1), 10);
   const invoiceNumberNF = parseInt(invoiceNF.slice(1), 10);
@@ -97,7 +113,7 @@ export default function App() {
               element={<Form2 lastinvoice={invoiceNumberSF} />}
             />
             <Route path="/certificates" element={<Certificates />} />
-            <Route path="/reports" element={<Reports />} />
+            <Route path="/reports" element={<Reports specialForm={dataSF} />} />
           </Routes>
         </Router>
       )}
