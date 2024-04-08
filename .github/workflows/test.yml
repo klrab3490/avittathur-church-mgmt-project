@@ -31,10 +31,17 @@ jobs:
           npm run lint
           npm exec tsc
           npm test
+
       - name: Upload Build Artifact
+        if: startsWith(matrix.os, 'windows')
         uses: actions/upload-artifact@v4
         with:
-          name: build-output
-          path: |
-            release/build/ElectronReact-4.6.0.AppImage
-            release/build/ElectronReact\ Setup\ 4.6.0.exe
+          name: setup-exe
+          path: release/build/ElectronReact Setup 4.6.0.exe
+
+      - name: Upload Build Artifact
+        if: startsWith(matrix.os, 'ubuntu')
+        uses: actions/upload-artifact@v4
+        with:
+          name: setup-appimage
+          path: release/build/ElectronReact-4.6.0.AppImage
