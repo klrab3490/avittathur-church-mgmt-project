@@ -27,14 +27,20 @@ interface Report {
 function ReportSF({ specialForm }: { specialForm: Report[] }) {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
+  const [filteredData, setFilteredData] = useState<Report[]>([]);
 
   // function to handle search
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (from && to) {
-      return true;
+      const fromDate = new Date(from);
+      const toDate = new Date(to);
+      const filtered = specialForm.filter((item) => {
+        const itemDate = new Date(item.formdate);
+        return itemDate >= fromDate && itemDate <= toDate;
+      });
+      setFilteredData(filtered);
     }
-    return false;
   };
 
   return (
@@ -47,7 +53,7 @@ function ReportSF({ specialForm }: { specialForm: Report[] }) {
         {/* Duration */}
         <div className="flex flex-col">
           <span className="text-xl font-bold mb-4 mt-8">Select Duration</span>
-          <div className="flex justify-center items-center gap-5">
+          <div className="flex flex-col justify-center items-center">
             <div className="flex gap-4 ">
               <div className="flex flex-col">
                 <span>From</span>
@@ -68,17 +74,21 @@ function ReportSF({ specialForm }: { specialForm: Report[] }) {
                 />
               </div>
             </div>
+            <div className="flex flex-col justify-center items-center">
+              {/* Search Button */}
+              <button
+                type="submit"
+                className="bg-[#236675] text-white p-2 rounded-lg mt-8"
+              >
+                Generate Report
+              </button>
+            </div>
           </div>
         </div>
-        {/* Search Button */}
-        <button
-          type="submit"
-          className="bg-[#236675] text-white p-2 rounded-lg mt-8"
-        >
-          Generate Report
-        </button>
       </form>
-      <SpecialReport data={specialForm} />
+      <SpecialReport
+        data={filteredData.length > 0 ? filteredData : specialForm}
+      />
     </div>
   );
 }
