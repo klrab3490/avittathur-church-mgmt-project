@@ -1,3 +1,4 @@
+import Footer from '../components/Footer';
 import MenuChip from '../components/MenuChip';
 import TopBar from '../components/TopBar';
 
@@ -52,6 +53,7 @@ function Home() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
