@@ -11,6 +11,18 @@ body {
   /* overflow-y: hidden; */
   padding: 5rem 5rem;
 }
-input, textarea{
+
+input,
+textarea {
   @apply text-black
 }
+.TopBar {
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../img/avittathur.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
+  backdrop-filter: blur(5px); /* Adjust the blur radius as needed */
+  -webkit-backdrop-filter: blur(5px); /* For Safari */
+}
+
+

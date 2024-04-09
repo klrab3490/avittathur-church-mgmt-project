@@ -6,18 +6,24 @@ function TopBar() {
   const { pathname } = location;
   const navigate = useNavigate();
   return (
-    <div className="bg-bgOther px-10 py-10 rounded-xl text-textPrimary">
+    <div className="TopBar bg-bgOther px-10 py-28 rounded-xl text-white">
       <div className="flex gap-20 cursor-pointer">
         <button
           type="button"
-          className={`flex flex-col justify-center items-center ring-2 rounded-xl ring-textPrimary p-2 ${
+          className={`flex flex-col justify-center items-center ring-2 rounded-xl ring-white p-2 ${
             pathname !== '/' ? 'flex' : 'hidden'
           }`}
           onClick={() => {
             navigate(-1);
           }}
         >
-          <img height={20} width={20} src={backIcon} alt="" />
+          <img
+            height={20}
+            width={20}
+            className="fill-white"
+            src={backIcon}
+            alt=""
+          />
           <h2 className="font-semibold text-xs">Go back</h2>
         </button>
         <div>
@@ -25,6 +31,11 @@ function TopBar() {
           <p className="font-medium">Avittathur</p>
         </div>
       </div>
+      <p className="float-right font-semibold">
+        Holy Family Church,
+        <br /> Avittathur, Thrissur - 680 683 <br />
+        Ph : +91-480-2825058
+      </p>
     </div>
   );
 }
