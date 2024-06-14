@@ -12,7 +12,9 @@ interface InvoiceItemsObject {
 
 function Form2({ lastinvoice }: { lastinvoice: number }) {
   const [invoice, setInvoice] = useState(
-    (lastinvoice + 1).toString().padStart(4, '0'),
+    (!Number.isNaN(lastinvoice) ? lastinvoice + 1 : 1)
+      .toString()
+      .padStart(4, '0'),
   );
   const emptyInvoiceItem = {
     id: crypto.randomUUID().toString(),
@@ -284,7 +286,6 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
                       <input
                         type="number"
                         name="price"
-                        value={item.price}
                         min={0}
                         onChange={(e) => handleInputChange(e, item)}
                         placeholder="Price"
@@ -295,7 +296,6 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
                       <input
                         type="number"
                         name="Booked"
-                        value={item.Booked}
                         min={1}
                         onChange={(e) => handleInputChange(e, item)}
                         placeholder="Booked Qty."

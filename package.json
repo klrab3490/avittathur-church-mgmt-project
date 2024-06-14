@@ -29,7 +29,7 @@
     {
       "name": "Rahul A B",
       "email": "rahulbushi69@gmail.com",
-      "url": "https://rahulab.live"
+      "url": "https://rahulab.vercel.app"
     }
   ],
   "main": "./src/main/main.ts",

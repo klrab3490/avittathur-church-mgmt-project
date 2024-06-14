@@ -12,8 +12,11 @@ interface InvoiceItemsObject {
 
 function Form1({ lastinvoice }: { lastinvoice: number }) {
   const [invoice, setInvoice] = useState(
-    (lastinvoice + 1).toString().padStart(4, '0'),
+    (!Number.isNaN(lastinvoice) ? lastinvoice + 1 : 1)
+      .toString()
+      .padStart(4, '0'),
   );
+
   const emptyInvoiceItem = {
     id: crypto.randomUUID().toString(),
     functionName: '',
@@ -21,6 +24,7 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
     Booked: 1,
     total: 0,
   };
+
   const [InvoiceItems, setInvoiceItems] = useState<InvoiceItemsObject[]>([
     emptyInvoiceItem,
   ]);
@@ -299,7 +303,6 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
                       <input
                         type="number"
                         name="price"
-                        value={item.price}
                         onChange={(e) => handleInputChange(e, item)}
                         placeholder="Price"
                         className="p-2 w-32 rounded-lg border-2 border-black/15 bg-bgSecondary"
@@ -309,7 +312,6 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
                       <input
                         type="number"
                         name="Booked"
-                        value={item.Booked}
                         min={1}
                         onChange={(e) => handleInputChange(e, item)}
                         placeholder="Booked Qty."
