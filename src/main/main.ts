@@ -40,7 +40,6 @@ ipcMain.on('connect-to-mongodb', async (event) => {
 
 ipcMain.on('insert-special-form', async (event, formData) => {
   try {
-    console.log('Inserting form data:', formData);
     const specialForm = new SpecialFormModel(formData);
     const Amount = formData.amount;
     const proportions = {
@@ -80,7 +79,6 @@ ipcMain.on('fetch-special-form-invoice', async (event) => {
       .sort({ _id: -1 })
       .select('invoice')
       .exec();
-    console.log('Special Form Last Invoice Number :', latestFormDataSP);
     if (latestFormDataSP) {
       event.reply('fetch-special-form-invoice', {
         success: true,
@@ -112,8 +110,6 @@ ipcMain.on('fetch-special-form-data', async (event) => {
       document._id = parseInt(document._id, 10);
       return document;
     });
-
-    console.log('Data: ', specialFormData);
     if (specialFormData) {
       event.reply('fetch-special-form-data', {
         success: true,
@@ -171,12 +167,10 @@ ipcMain.on('insert-normal-form', async (event, formData) => {
 
 ipcMain.on('fetch-normal-form-invoice', async (event) => {
   try {
-    // Query the database to fetch the last inserted form data invoice number
     const latestFormDataNF = await NormalFormModel.findOne()
       .sort({ _id: -1 })
       .select('invoice')
       .exec();
-    console.log('Normal Form Last Invoice Number :', latestFormDataNF);
     if (latestFormDataNF) {
       event.reply('fetch-normal-form-invoice', {
         success: true,
@@ -208,8 +202,6 @@ ipcMain.on('fetch-normal-form-data', async (event) => {
       document._id = parseInt(document._id, 10);
       return document;
     });
-
-    console.log('Data: ', normalFormData);
     if (normalFormData) {
       event.reply('fetch-normal-form-data', {
         success: true,
