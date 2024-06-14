@@ -230,6 +230,39 @@ ipcMain.on('fetch-normal-form-data', async (event) => {
   }
 });
 
+ipcMain.on('fetch-account-book-data', async (event) => {
+  try {
+    let accountBookData = await AccountBookModel.find().exec();
+
+    // Convert ObjectId to string
+    accountBookData = accountBookData.map((doc) => {
+      const document = doc.toObject();
+      // eslint-disable-next-line no-underscore-dangle
+      document._id = parseInt(document._id, 10);
+      return document;
+    });
+
+    console.log('Data: ', accountBookData);
+    if (accountBookData) {
+      event.reply('fetch-account-book-data', {
+        success: true,
+        data: accountBookData,
+      });
+    } else {
+      event.reply('fetch-account-book-data', {
+        success: false,
+        message: 'No data found',
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching account book data:', error);
+    event.reply('fetch-account-book-data', {
+      success: false,
+      message: 'An error occurred while fetching data',
+    });
+  }
+});
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
