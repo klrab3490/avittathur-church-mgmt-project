@@ -17,6 +17,7 @@ import { resolveHtmlPath } from './util';
 import connectToMongoDB from '../database/dbConfig';
 import SpecialFormModel from '../database/models/Forms/specialFormModel';
 import NormalFormModel from '../database/models/Forms/normalFormModel';
+import AccountBookModel from '../database/models/Acoount/accountBook';
 
 class AppUpdater {
   constructor() {
@@ -41,7 +42,27 @@ ipcMain.on('insert-special-form', async (event, formData) => {
   try {
     console.log('Inserting form data:', formData);
     const specialForm = new SpecialFormModel(formData);
+    const Amount = formData.amount;
+    const proportions = {
+      vicar: (Amount * 11) / 20,
+      kapaya: (Amount * 3) / 20,
+      choir: (Amount * 3) / 20,
+      alter: (Amount * 1) / 20,
+      chruch: (Amount * 2) / 20,
+    };
+
+    const total = Object.values(proportions).reduce(
+      (sum, value) => sum + value,
+      0,
+    );
+    const accountBook = new AccountBookModel({
+      ...proportions,
+      total,
+      // eslint-disable-next-line no-underscore-dangle
+      formId: specialForm._id,
+    });
     await specialForm.save();
+    await accountBook.save();
     event.reply('insert-special-form', 'Form data saved successfully');
   } catch (error) {
     console.error('Error inserting form data:', error);
@@ -117,7 +138,27 @@ ipcMain.on('insert-normal-form', async (event, formData) => {
   try {
     console.log('Inserting form data:', formData);
     const normalForm = new NormalFormModel(formData);
+    const Amount = formData.amount;
+    const proportions = {
+      vicar: (Amount * 11) / 20,
+      kapaya: (Amount * 3) / 20,
+      choir: (Amount * 3) / 20,
+      alter: (Amount * 1) / 20,
+      chruch: (Amount * 2) / 20,
+    };
+
+    const total = Object.values(proportions).reduce(
+      (sum, value) => sum + value,
+      0,
+    );
+    const accountBook = new AccountBookModel({
+      ...proportions,
+      total,
+      // eslint-disable-next-line no-underscore-dangle
+      formId: normalForm._id,
+    });
     await normalForm.save();
+    await accountBook.save();
     event.reply('insert-normal-form', 'Form data saved successfully');
   } catch (error) {
     console.error('Error inserting form data:', error);
@@ -183,6 +224,39 @@ ipcMain.on('fetch-normal-form-data', async (event) => {
   } catch (error) {
     console.error('Error fetching special form data:', error);
     event.reply('fetch-normal-form-data', {
+      success: false,
+      message: 'An error occurred while fetching data',
+    });
+  }
+});
+
+ipcMain.on('fetch-account-book-data', async (event) => {
+  try {
+    let accountBookData = await AccountBookModel.find().exec();
+
+    // Convert ObjectId to string
+    accountBookData = accountBookData.map((doc) => {
+      const document = doc.toObject();
+      // eslint-disable-next-line no-underscore-dangle
+      document._id = parseInt(document._id, 10);
+      return document;
+    });
+
+    console.log('Data: ', accountBookData);
+    if (accountBookData) {
+      event.reply('fetch-account-book-data', {
+        success: true,
+        data: accountBookData,
+      });
+    } else {
+      event.reply('fetch-account-book-data', {
+        success: false,
+        message: 'No data found',
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching account book data:', error);
+    event.reply('fetch-account-book-data', {
       success: false,
       message: 'An error occurred while fetching data',
     });
