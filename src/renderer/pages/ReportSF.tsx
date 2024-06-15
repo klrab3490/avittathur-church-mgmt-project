@@ -50,6 +50,7 @@ function ReportSF({ specialForm }: { specialForm: Report[] }) {
         onSubmit={handleSearch}
         className="flex flex-col gap-3 py-10 px-5 text-[#236675]"
       >
+        <span className="text-2xl font-bold">Special Form Reports</span>
         {/* Duration */}
         <div className="flex flex-col">
           <span className="text-xl font-bold mb-4 mt-8">Select Duration</span>
