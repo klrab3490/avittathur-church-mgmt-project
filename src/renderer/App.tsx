@@ -14,7 +14,6 @@ export default function App() {
   const [fetchError, setFetchError] = useState(false);
   const [invoiceSF, setInvoiceSF] = useState('');
   const [invoiceNF, setInvoiceNF] = useState('');
-  const [dataNF, setDataNF] = useState([]);
   const [dataSF, setDataSF] = useState([]);
 
   useEffect(() => {
@@ -73,15 +72,6 @@ export default function App() {
       },
     );
     window.electron.ipcRenderer.fetchNormalFormInvoice();
-    window.electron.ipcRenderer.once('fetch-normal-form-data', (event: any) => {
-      if (event.success) {
-        setFetchError(false);
-        setDataNF(event.data);
-      } else {
-        setFetchError(true);
-      }
-    });
-    window.electron.ipcRenderer.fetchNormalFormData();
   }, []);
   const invoiceNumberSF = parseInt(invoiceSF.slice(1), 10);
   const invoiceNumberNF = parseInt(invoiceNF.slice(1), 10);
@@ -113,10 +103,7 @@ export default function App() {
               element={<Form2 lastinvoice={invoiceNumberSF} />}
             />
             <Route path="/certificates" element={<Certificates />} />
-            <Route
-              path="/reportNF"
-              element={<ReportNF normalForm={dataNF} />}
-            />
+            <Route path="/reportNF" element={<ReportNF />} />
             <Route
               path="/reportSF"
               element={<ReportSF specialForm={dataSF} />}
