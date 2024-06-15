@@ -38,7 +38,7 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
   // Update total and calculate price*qty whenever change in items
   useEffect(() => {
     const updatedItems = InvoiceItems.map((invoiceItem) => ({
-      invoiceId: `S${invoice.toString()}`,
+      invoiceId: `N${invoice.toString()}`,
       ...invoiceItem,
       total: invoiceItem.price * invoiceItem.Booked,
     }));
@@ -159,8 +159,8 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
           </div>
         )}
         <div className="flex justify-between">
-          <span className="text-2xl font-bold">Special Form</span>
-          <span className="text-xl">Invoice Number #S{invoice}</span>
+          <span className="text-2xl font-bold">Normal Form</span>
+          <span className="text-xl">Invoice Number #N{invoice}</span>
         </div>
         <span className="text-xl font-bold mb-4 mt-8">Details</span>
 
