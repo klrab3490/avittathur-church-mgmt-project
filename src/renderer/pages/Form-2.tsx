@@ -122,7 +122,7 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
     };
     // Check if there are any valid invoice items
     if (formData.invoiceItems.length > 0) {
-      window.electron.ipcRenderer.insertNormalForm(formData);
+      window.electron.ipcRenderer.insertSpecialForm(formData);
       setStatus(true);
       setStatusMessage('Invoice created successfully');
       clearForm();

@@ -119,7 +119,7 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
       note,
     };
     if (formData.invoiceItems.length > 0) {
-      window.electron.ipcRenderer.insertSpecialForm(formData);
+      window.electron.ipcRenderer.insertNormalForm(formData);
       setStatus(true);
       setStatusMessage('Invoice created successfully');
       clearForm();
