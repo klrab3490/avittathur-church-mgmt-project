@@ -18,12 +18,12 @@ function Home() {
         <div className="py-10 grid grid-cols-1 md:grid-cols-2 md:gap-x-40 gap-10">
           <MenuChip
             title="Normal Form"
-            route="/form-2"
+            route="/form-1"
             description="Daily Entry"
           />
           <MenuChip
             title="Special Form"
-            route="/form-1"
+            route="/form-2"
             description="Description"
           />
           {/* <MenuChip
