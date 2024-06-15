@@ -26,4 +26,21 @@ textarea {
   -webkit-backdrop-filter: blur(5px); /* For Safari */
 }
 
+.relative::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  width: 100%;
+  height: 3px;
+  background-color: rgb(93, 193, 193);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.relative:hover::after {
+  opacity: 1;
+}
+
+
 
