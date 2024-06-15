@@ -16,6 +16,7 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
       .toString()
       .padStart(4, '0'),
   );
+
   const emptyInvoiceItem = {
     id: crypto.randomUUID().toString(),
     functionName: '',
@@ -23,6 +24,7 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
     Booked: 1,
     total: 0,
   };
+
   const [InvoiceItems, setInvoiceItems] = useState<InvoiceItemsObject[]>([
     emptyInvoiceItem,
   ]);
@@ -38,7 +40,7 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
   // Update total and calculate price*qty whenever change in items
   useEffect(() => {
     const updatedItems = InvoiceItems.map((invoiceItem) => ({
-      invoiceId: `S${invoice.toString()}`,
+      invoiceId: `N${invoice.toString()}`,
       ...invoiceItem,
       total: invoiceItem.price * invoiceItem.Booked,
     }));
@@ -105,7 +107,7 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
     e.preventDefault();
     const formData = {
       name: `${fname} ${lname}`,
-      invoice: `S${invoice}`,
+      invoice: `N${invoice}`,
       address,
       housename: house,
       unit,
@@ -118,8 +120,9 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
       amount: Total * 1.0,
       note,
     };
+    // Check if there are any valid invoice items
     if (formData.invoiceItems.length > 0) {
-      window.electron.ipcRenderer.insertSpecialForm(formData);
+      window.electron.ipcRenderer.insertNormalForm(formData);
       setStatus(true);
       setStatusMessage('Invoice created successfully');
       clearForm();
@@ -133,15 +136,30 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
     setTimeout(() => setStatusMessage(''), 4000); // Clear status message after 3 seconds
   };
 
-  const specialFunction = [
-    'സാധാരണ കുർബാന',
-    'ആഘോഷമായ കുർബാന',
+  const normalFunction = [
+    'സാധാരണ കുർബാന​',
+    'ആഘോഷമായ കുർബാന​',
     'ഒപ്പീസ് പള്ളിയിൽ',
     'ഒപ്പീസ് സെമിത്തേരിയിൽ',
+    'ലദീഞ്ഞ്',
+    'നൊവേന',
+    'സ്തോത്രഗീതം',
+    'വിവാഹ കാഴ്ച',
+    'സമ്മാനത്തിരി',
+    'വെഞ്ചിരിപ്പ്',
+    'ലൈറ്റ്',
+    'വീഡിയോ',
+    'കപ്യാർ സ്പെഷൽ',
+    'ഉണ്ണീശോയുടെ നൊവേനകുർബാന',
+    'തിരുക്കുടുംബ നൊവേനകുർബാന',
+    'ഗായകസംഘം',
+    'സമർപ്പണം',
+    'കസേര',
+    'വീട്ടന്നീദ',
   ];
 
   return (
-    <div className="ring-4 ring-bgSecondary p-10 rounded-xl">
+    <div className="ring-4 ring-bgSecondary p-10 rounded-xl text-[#236675]">
       <TopBar />
       <form
         onSubmit={handleCreate}
@@ -159,11 +177,10 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
           </div>
         )}
         <div className="flex justify-between">
-          <span className="text-2xl font-bold">Special Form</span>
-          <span className="text-xl">Invoice Number #S{invoice}</span>
+          <span className="text-2xl font-bold">Normal Form</span>
+          <span className="text-xl">Invoice Number #N{invoice}</span>
         </div>
         <span className="text-xl font-bold mb-4 mt-8">Details</span>
-
         {/* Name */}
         <div className="flex justify-between">
           <div className="w-1/2 flex flex-col">
@@ -172,8 +189,8 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
               type="text"
               name="firstname"
               value={fname}
-              placeholder="First Name"
               onChange={(e) => setFName(e.target.value)}
+              placeholder="First Name"
               className="w-3/4 p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
             />
           </div>
@@ -183,8 +200,8 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
               type="text"
               name="lastname"
               value={lname}
-              placeholder="Last Name"
               onChange={(e) => setLName(e.target.value)}
+              placeholder="Last Name"
               className="w-3/4 p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
             />
           </div>
@@ -196,8 +213,8 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
             rows={6}
             name="address"
             value={address}
-            placeholder="Address"
             onChange={(e) => setAddress(e.target.value)}
+            placeholder="Address"
             className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary resize-none"
           />
         </div>
@@ -208,8 +225,8 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
             type="text"
             name="housename"
             value={house}
-            placeholder="House Name"
             onChange={(e) => setHouse(e.target.value)}
+            placeholder="House Name"
             className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary"
           />
         </div>
@@ -260,7 +277,7 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
                 <tr className="font-semibold">
                   <th className="w-96">Item</th>
                   <th className="w-32">Price</th>
-                  <th className="w-32">Booked</th>
+                  <th className="w-24">Booked</th>
                   <th className="w-32">Total Price</th>
                 </tr>
               </thead>
@@ -275,7 +292,7 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
                         className="p-2 w-96 rounded-lg border-2 border-black/15 bg-bgSecondary"
                       >
                         <option value="">Select Function</option>
-                        {specialFunction.map((func) => (
+                        {normalFunction.map((func) => (
                           <option value={func} key={func}>
                             {func}
                           </option>
@@ -286,7 +303,6 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
                       <input
                         type="number"
                         name="price"
-                        min={0}
                         onChange={(e) => handleInputChange(e, item)}
                         placeholder="Price"
                         className="p-2 w-32 rounded-lg border-2 border-black/15 bg-bgSecondary"
@@ -347,13 +363,13 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
         </div>
         {/* Notes */}
         <div className="flex flex-col">
-          <span>Notes</span>
+          <span className="font-bold text-xl my-4">Notes</span>
           <textarea
             rows={6}
             name="notes"
             value={note}
-            placeholder="Notes"
             onChange={(e) => setNote(e.target.value)}
+            placeholder="Notes"
             className="p-2 rounded-lg border-2 border-black/15 bg-bgSecondary resize-none"
           />
         </div>
