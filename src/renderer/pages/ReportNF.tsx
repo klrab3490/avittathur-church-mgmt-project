@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import TopBar from '../components/TopBar';
 import NormalReport from '../components/NormalReport';
 
@@ -12,22 +12,41 @@ interface InvoiceItemsObject {
 }
 interface Report {
   id: number;
-  name: String;
-  invoice: String;
-  address: String;
-  housename: String;
-  unit: String;
+  name: string;
+  invoice: string;
+  address: string;
+  housename: string;
+  unit: string;
   formdate: Date;
   dateOfHolymass: Date;
   amount: number;
-  note: String;
-  invoiceItems: [InvoiceItemsObject];
+  note: string;
+  invoiceItems: InvoiceItemsObject[];
 }
 
-function ReportNF({ normalForm }: { normalForm: Report[] }) {
+function ReportNF() {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [filteredData, setFilteredData] = useState<Report[]>([]);
+  const [normalForm, setNormalForm] = useState<Report[]>([]);
+
+  useEffect(() => {
+    const fetchData = () => {
+      window.electron.ipcRenderer.once(
+        'fetch-normal-form-data',
+        (event: any): void => {
+          if (event.success) {
+            setNormalForm(event.data);
+          } else {
+            console.error('Failed to fetch data');
+          }
+        },
+      );
+      window.electron.ipcRenderer.fetchNormalFormData();
+    };
+
+    fetchData();
+  }, [from, to]);
 
   // function to handle search
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-// Define interface for your form data
 interface InvoiceItemsObject {
   id: string;
   functionName: string;
@@ -11,16 +10,16 @@ interface InvoiceItemsObject {
 
 interface Report {
   id: number;
-  name: String;
-  invoice: String;
-  address: String;
-  housename: String;
-  unit: String;
+  name: string;
+  invoice: string;
+  address: string;
+  housename: string;
+  unit: string;
   formdate: Date;
   dateOfHolymass: Date;
   amount: number;
-  note: String;
-  invoiceItems: [InvoiceItemsObject];
+  note: string;
+  invoiceItems: InvoiceItemsObject[];
 }
 
 function NormalReport({ data }: { data: Report[] }) {
