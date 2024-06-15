@@ -105,7 +105,7 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
     e.preventDefault();
     const formData = {
       name: `${fname} ${lname}`,
-      invoice: `S${invoice}`,
+      invoice: `N${invoice}`,
       address,
       housename: house,
       unit,
