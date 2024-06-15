@@ -23,7 +23,7 @@ interface Report {
   invoiceItems: [InvoiceItemsObject];
 }
 
-function SpecialReport({ data }: { data: Report[] }) {
+function NormalReport({ data }: { data: Report[] }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
 
@@ -116,4 +116,4 @@ function SpecialReport({ data }: { data: Report[] }) {
   );
 }
 
-export default SpecialReport;
+export default NormalReport;
