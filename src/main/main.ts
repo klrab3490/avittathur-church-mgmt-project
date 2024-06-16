@@ -29,6 +29,7 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
+// Connect to MongoDB
 ipcMain.on('connect-to-mongodb', async (event) => {
   try {
     await connectToMongoDB();
@@ -38,6 +39,7 @@ ipcMain.on('connect-to-mongodb', async (event) => {
   }
 });
 
+// Insert special form data
 ipcMain.on('insert-special-form', async (event, formData) => {
   try {
     const specialForm = new SpecialFormModel(formData);
@@ -72,6 +74,7 @@ ipcMain.on('insert-special-form', async (event, formData) => {
   }
 });
 
+// Fetch special form invoice
 ipcMain.on('fetch-special-form-invoice', async (event) => {
   try {
     // Query the database to fetch the latest inserted form data
@@ -99,10 +102,10 @@ ipcMain.on('fetch-special-form-invoice', async (event) => {
   }
 });
 
+// Fetch special form data
 ipcMain.on('fetch-special-form-data', async (event) => {
   try {
     let specialFormData = await SpecialFormModel.find().exec();
-
     // Convert ObjectId to string
     specialFormData = specialFormData.map((doc) => {
       const document = doc.toObject();
@@ -130,6 +133,7 @@ ipcMain.on('fetch-special-form-data', async (event) => {
   }
 });
 
+// Insert normal form data
 ipcMain.on('insert-normal-form', async (event, formData) => {
   try {
     console.log('Inserting form data:', formData);
@@ -165,6 +169,7 @@ ipcMain.on('insert-normal-form', async (event, formData) => {
   }
 });
 
+// Fetch normal form invoice
 ipcMain.on('fetch-normal-form-invoice', async (event) => {
   try {
     const latestFormDataNF = await NormalFormModel.findOne()
@@ -191,10 +196,10 @@ ipcMain.on('fetch-normal-form-invoice', async (event) => {
   }
 });
 
+// Fetch normal form data
 ipcMain.on('fetch-normal-form-data', async (event) => {
   try {
     let normalFormData = await NormalFormModel.find().exec();
-
     // Convert ObjectId to string
     normalFormData = normalFormData.map((doc) => {
       const document = doc.toObject();
@@ -222,6 +227,7 @@ ipcMain.on('fetch-normal-form-data', async (event) => {
   }
 });
 
+// Fetch account book data
 ipcMain.on('fetch-account-book-data', async (event) => {
   try {
     let accountBookData = await AccountBookModel.find().exec();
@@ -255,6 +261,7 @@ ipcMain.on('fetch-account-book-data', async (event) => {
   }
 });
 
+// Reload the app
 ipcMain.on('reload-app', () => {
   mainWindow?.reload();
 });

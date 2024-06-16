@@ -21,6 +21,7 @@ const electronHandler = {
     sendMessage(channel: Channels, ...args: unknown[]) {
       ipcRenderer.send(channel, ...args);
     },
+
     // Listen to messages from IPC channel
     on(channel: Channels, func: (...args: unknown[]) => void) {
       const subscription = (_event: IpcRendererEvent, ...args: unknown[]) =>
@@ -31,38 +32,47 @@ const electronHandler = {
         ipcRenderer.removeListener(channel, subscription);
       };
     },
+
     // Listen to only one message from IPC channel
     once(channel: Channels, func: (...args: unknown[]) => void) {
       ipcRenderer.once(channel, (_event, ...args) => func(...args));
     },
+
     // Connect to MongoDB
     connectToMongoDB: () => {
       ipcRenderer.send('connect-to-mongodb');
     },
+
     // Insert special form
     insertSpecialForm: (formData: unknown) => {
       ipcRenderer.send('insert-special-form', formData);
     },
+
     // Fetch last invoice number from special form
     fetchSpecialFormInvoice: () => {
       ipcRenderer.send('fetch-special-form-invoice');
     },
+
     // Fetch last data from special form
     fetchSpecialFormData: () => {
       ipcRenderer.send('fetch-special-form-data');
     },
+
     // Insert normal form
     insertNormalForm: (FormData: unknown) => {
       ipcRenderer.send('insert-normal-form', FormData);
     },
+
     // Fetch last invoice number from normal form
     fetchNormalFormInvoice: () => {
       ipcRenderer.send('fetch-normal-form-invoice');
     },
+
     // Fetch last data from normal form
     fetchNormalFormData: () => {
       ipcRenderer.send('fetch-normal-form-data');
     },
+
     // Reload the application
     reloadApp: () => {
       ipcRenderer.send('reload-app');

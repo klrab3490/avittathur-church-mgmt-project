@@ -1,6 +1,8 @@
+import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
 import { IoIosTrash } from 'react-icons/io';
 import { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import TopBar from '../components/TopBar';
+import InvoiceNF from '../components/InvoiceNF';
 
 interface InvoiceItemsObject {
   id: string;
@@ -8,6 +10,19 @@ interface InvoiceItemsObject {
   price: number;
   Booked: number;
   total: number;
+}
+
+interface Invoice {
+  name: string;
+  invoice: string;
+  address: string;
+  housename: string;
+  unit: string;
+  formdate: Date;
+  dateOfHolymass: Date;
+  amount: number;
+  note: string;
+  invoiceItems: InvoiceItemsObject[];
 }
 
 function Form1({ lastinvoice }: { lastinvoice: number }) {
@@ -30,10 +45,20 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
   const [statusMessage, setStatusMessage] = useState('');
   const [status, setStatus] = useState(false);
 
-  // Function to scroll to the top of the page
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  // form data
+  const [fname, setFName] = useState('');
+  const [lname, setLName] = useState('');
+  const [address, setAddress] = useState('');
+  const [house, setHouse] = useState('');
+  const [unit, setUnit] = useState('');
+  const [issueDate, setIssueDate] = useState(
+    new Date().toISOString().split('T')[0],
+  );
+  const [bookDate, setBookDate] = useState(
+    new Date().toISOString().split('T')[0],
+  );
+  const [note, setNote] = useState('');
+  const [formData, setFormData] = useState<Invoice>();
 
   // Update total and calculate price*qty whenever change in items
   useEffect(() => {
@@ -69,20 +94,6 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
     }
   };
 
-  // form data
-  const [fname, setFName] = useState('');
-  const [lname, setLName] = useState('');
-  const [address, setAddress] = useState('');
-  const [house, setHouse] = useState('');
-  const [unit, setUnit] = useState('');
-  const [issueDate, setIssueDate] = useState(
-    new Date().toISOString().split('T')[0],
-  );
-  const [bookDate, setBookDate] = useState(
-    new Date().toISOString().split('T')[0],
-  );
-  const [note, setNote] = useState('');
-
   // form clear
   const clearForm = () => {
     setInvoice((prevInvoice) => {
@@ -100,17 +111,22 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
     setInvoiceItems([emptyInvoiceItem]);
   };
 
+  // Function to scroll to the top of the page
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   // form submit
   const handleCreate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = {
+    const data = {
       name: `${fname} ${lname}`,
       invoice: `N${invoice}`,
       address,
       housename: house,
       unit,
-      formdate: issueDate,
-      dateOfHolymass: bookDate,
+      formdate: new Date(issueDate),
+      dateOfHolymass: new Date(bookDate),
       invoiceItems: InvoiceItems.filter(
         (item) =>
           item.functionName !== '' && item.price !== 0 && item.Booked !== 0,
@@ -119,8 +135,9 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
       note,
     };
     // Check if there are any valid invoice items
-    if (formData.invoiceItems.length > 0) {
-      window.electron.ipcRenderer.insertNormalForm(formData);
+    if (data.invoiceItems.length > 0) {
+      window.electron.ipcRenderer.insertNormalForm(data);
+      setFormData(data);
       setStatus(true);
       setStatusMessage('Invoice created successfully');
       clearForm();
@@ -130,7 +147,6 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
         'Please fill in all fields for at least one invoice item',
       );
     }
-    scrollToTop();
     setTimeout(() => setStatusMessage(''), 4000); // Clear status message after 3 seconds
   };
 
@@ -366,6 +382,32 @@ function Form1({ lastinvoice }: { lastinvoice: number }) {
           </button>
         </div>
       </form>
+      {formData && (
+        <div>
+          <PDFViewer width="100%" height="600">
+            <InvoiceNF data={formData} />
+          </PDFViewer>
+          <PDFDownloadLink
+            document={<InvoiceNF data={formData} />}
+            fileName="invoice.pdf"
+          >
+            {({ loading }) =>
+              loading ? 'Loading document...' : 'Download now!'
+            }
+          </PDFDownloadLink>
+          <br />
+          <button
+            type="button"
+            onClick={() => {
+              window.print();
+              scrollToTop();
+              setFormData(undefined);
+            }}
+          >
+            Print Invoice
+          </button>
+        </div>
+      )}
     </div>
   );
 }
