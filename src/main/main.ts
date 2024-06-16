@@ -255,6 +255,10 @@ ipcMain.on('fetch-account-book-data', async (event) => {
   }
 });
 
+ipcMain.on('reload-app', () => {
+  mainWindow?.reload();
+});
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();

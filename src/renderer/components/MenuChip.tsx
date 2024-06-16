@@ -5,6 +5,7 @@ interface MenuChipProps {
   route: string;
   description: string;
 }
+
 function MenuChip({ title, route, description }: MenuChipProps) {
   return (
     <Link to={route}>

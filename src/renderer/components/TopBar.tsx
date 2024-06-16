@@ -1,10 +1,16 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import backIcon from '../../img/chevron-left-solid.svg';
 
 function TopBar() {
   const location = useLocation();
   const { pathname } = location;
-  const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    if (pathname !== '/') {
+      window.electron.ipcRenderer.sendMessage('reload-app');
+    }
+  };
+
   return (
     <div className="TopBar bg-bgOther px-10 py-28 rounded-xl text-white">
       <div className="flex gap-20 cursor-pointer">
@@ -13,16 +19,14 @@ function TopBar() {
           className={`flex flex-col justify-center items-center ring-2 rounded-xl ring-white p-2 ${
             pathname !== '/' ? 'flex' : 'hidden'
           }`}
-          onClick={() => {
-            navigate(-1);
-          }}
+          onClick={handleBackClick}
         >
           <img
             height={20}
             width={20}
             className="fill-white"
             src={backIcon}
-            alt=""
+            alt="Back Icon"
           />
           <h2 className="font-semibold text-xs">Go back</h2>
         </button>

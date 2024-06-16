@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import TopBar from '../components/TopBar';
 import SpecialReport from '../components/SpecialReport';
 
@@ -10,6 +10,7 @@ interface InvoiceItemsObject {
   Booked: number;
   total: number;
 }
+
 interface Report {
   id: number;
   name: String;
@@ -24,11 +25,29 @@ interface Report {
   invoiceItems: [InvoiceItemsObject];
 }
 
-function ReportSF({ specialForm }: { specialForm: Report[] }) {
+function ReportSF() {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [filteredData, setFilteredData] = useState<Report[]>([]);
+  const [specialForm, setSpecialForm] = useState<Report[]>([]);
 
+  useEffect(() => {
+    const fetchData = () => {
+      window.electron.ipcRenderer.once(
+        'fetch-special-form-data',
+        (event: any): void => {
+          if (event.success) {
+            setSpecialForm(event.data);
+          } else {
+            console.error('Failed to fetch data');
+          }
+        },
+      );
+      window.electron.ipcRenderer.fetchSpecialFormData();
+    };
+
+    fetchData();
+  }, [from, to]);
   // function to handle search
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

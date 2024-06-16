@@ -12,10 +12,9 @@ interface InvoiceItemsObject {
 
 function Form2({ lastinvoice }: { lastinvoice: number }) {
   const [invoice, setInvoice] = useState(
-    (!Number.isNaN(lastinvoice) ? lastinvoice + 1 : 1)
-      .toString()
-      .padStart(4, '0'),
+    (lastinvoice + 1).toString().padStart(4, '0'),
   );
+
   const emptyInvoiceItem = {
     id: crypto.randomUUID().toString(),
     functionName: '',
@@ -38,7 +37,7 @@ function Form2({ lastinvoice }: { lastinvoice: number }) {
   // Update total and calculate price*qty whenever change in items
   useEffect(() => {
     const updatedItems = InvoiceItems.map((invoiceItem) => ({
-      invoiceId: `N${invoice.toString()}`,
+      invoiceId: `S${invoice.toString()}`,
       ...invoiceItem,
       total: invoiceItem.price * invoiceItem.Booked,
     }));

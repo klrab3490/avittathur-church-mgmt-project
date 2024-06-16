@@ -14,7 +14,6 @@ export default function App() {
   const [fetchError, setFetchError] = useState(false);
   const [invoiceSF, setInvoiceSF] = useState('');
   const [invoiceNF, setInvoiceNF] = useState('');
-  const [dataSF, setDataSF] = useState([]);
 
   useEffect(() => {
     const handleDBConnection = (arg: unknown) => {
@@ -26,6 +25,7 @@ export default function App() {
       'connect-to-mongodb',
       handleDBConnection as (...args: unknown[]) => void,
     );
+
     // special form: invoice number
     window.electron.ipcRenderer.once(
       'fetch-special-form-invoice',
@@ -43,18 +43,7 @@ export default function App() {
       },
     );
     window.electron.ipcRenderer.fetchSpecialFormInvoice();
-    window.electron.ipcRenderer.once(
-      'fetch-special-form-data',
-      (event: any) => {
-        if (event.success) {
-          setFetchError(false);
-          setDataSF(event.data);
-        } else {
-          setFetchError(true);
-        }
-      },
-    );
-    window.electron.ipcRenderer.fetchSpecialFormData();
+
     // normal form: invoice number
     window.electron.ipcRenderer.once(
       'fetch-normal-form-invoice',
@@ -73,8 +62,9 @@ export default function App() {
     );
     window.electron.ipcRenderer.fetchNormalFormInvoice();
   }, []);
-  const invoiceNumberSF = parseInt(invoiceSF.slice(1), 10);
-  const invoiceNumberNF = parseInt(invoiceNF.slice(1), 10);
+
+  const invoiceNumberNF = invoiceNF ? parseInt(invoiceNF.slice(1), 10) : 0;
+  const invoiceNumberSF = invoiceSF ? parseInt(invoiceSF.slice(1), 10) : 0;
 
   return (
     <div className="">
@@ -85,9 +75,9 @@ export default function App() {
           </div>
         </div>
       )}
-      {!fetchError && !isDBConnected && (
+      {!isDBConnected && !fetchError && (
         <div className="flex justify-center items-center h-screen">
-          <div className="text-4xl">Connecting to Database...</div>
+          <div className="text-4xl">Connecting to database...</div>
         </div>
       )}
       {!fetchError && isDBConnected && (
@@ -104,10 +94,7 @@ export default function App() {
             />
             <Route path="/certificates" element={<Certificates />} />
             <Route path="/reportNF" element={<ReportNF />} />
-            <Route
-              path="/reportSF"
-              element={<ReportSF specialForm={dataSF} />}
-            />
+            <Route path="/reportSF" element={<ReportSF />} />
           </Routes>
         </Router>
       )}

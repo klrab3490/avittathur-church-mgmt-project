@@ -10,6 +10,7 @@ interface InvoiceItemsObject {
   Booked: number;
   total: number;
 }
+
 interface Report {
   id: number;
   name: string;

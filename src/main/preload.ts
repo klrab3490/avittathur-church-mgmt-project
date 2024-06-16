@@ -11,7 +11,8 @@ export type Channels =
   | 'fetch-special-form-data'
   | 'insert-normal-form'
   | 'fetch-normal-form-invoice'
-  | 'fetch-normal-form-data';
+  | 'fetch-normal-form-data'
+  | 'reload-app';
 
 // Define the electronHandler object
 const electronHandler = {
@@ -46,6 +47,7 @@ const electronHandler = {
     fetchSpecialFormInvoice: () => {
       ipcRenderer.send('fetch-special-form-invoice');
     },
+    // Fetch last data from special form
     fetchSpecialFormData: () => {
       ipcRenderer.send('fetch-special-form-data');
     },
@@ -57,8 +59,13 @@ const electronHandler = {
     fetchNormalFormInvoice: () => {
       ipcRenderer.send('fetch-normal-form-invoice');
     },
+    // Fetch last data from normal form
     fetchNormalFormData: () => {
       ipcRenderer.send('fetch-normal-form-data');
+    },
+    // Reload the application
+    reloadApp: () => {
+      ipcRenderer.send('reload-app');
     },
   },
 };
